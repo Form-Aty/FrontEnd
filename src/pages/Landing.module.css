@@ -9,11 +9,12 @@
     calc(var(--space-6) + env(safe-area-inset-bottom));
 }
 .brand {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-h1);
-  letter-spacing: -0.02em;
-  color: var(--action-primary);
+  display: block;
+  height: 52px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  object-position: left center;
 }
 .body {
   flex: 1;

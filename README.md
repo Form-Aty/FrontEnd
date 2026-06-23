@@ -1,4 +1,4 @@
-# 폼앗이 (Formaty) — Frontend
+# 폼앗이 — Frontend
 
 대학생 설문 품앗이 PWA. **응답은 응답으로 갚는다.**
 

@@ -28,7 +28,7 @@ export function AppShell({ title, children, back, brand, action, hideNav }: Prop
               </button>
             )}
             {brand ? (
-              <span className={styles.brand}>폼앗이</span>
+              <img className={styles.brand} src="/logo.png" alt="폼앗이" />
             ) : (
               <h1 className={styles.title}>{title}</h1>
             )}

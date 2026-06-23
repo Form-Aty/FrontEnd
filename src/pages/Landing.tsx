@@ -11,7 +11,7 @@ export function Landing() {
   if (authed) return <Navigate to="/home" replace />;
   return (
     <div className={styles.page}>
-      <span className={styles.brand}>폼앗이</span>
+      <img className={styles.brand} src="/logo.png" alt="폼앗이" />
 
       <div className={styles.body}>
         <h1 className={styles.title}>

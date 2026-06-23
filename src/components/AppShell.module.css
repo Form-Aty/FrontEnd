@@ -27,12 +27,12 @@
   gap: var(--space-1);
 }
 .brand {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-h1);
-  letter-spacing: -0.02em;
-  color: var(--action-primary);
-  padding-left: var(--space-2);
+  display: block;
+  height: 32px;
+  width: auto;
+  margin-left: var(--space-2);
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 .title {
   font-size: var(--text-h2);

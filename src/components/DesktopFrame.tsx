@@ -7,7 +7,7 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
   return (
     <div className={styles.root}>
       <aside className={styles.pitch} aria-hidden>
-        <span className={styles.brand}>폼앗이</span>
+        <img className={styles.brand} src="/logo.png" alt="" />
         <h1 className={styles.headline}>
           응답은 응답으로,
           <br />

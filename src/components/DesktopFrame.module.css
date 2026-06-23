@@ -36,11 +36,12 @@
     flex: 0 0 auto;
   }
   .brand {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-h1);
-    letter-spacing: -0.02em;
-    color: var(--action-primary);
+    display: block;
+    height: 56px;
+    width: auto;
+    max-width: 164px;
+    object-fit: contain;
+    object-position: left center;
   }
   .headline {
     margin-top: var(--space-5);
