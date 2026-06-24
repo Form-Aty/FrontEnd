@@ -1,5 +1,5 @@
 .page {
-  min-height: 100dvh;
+  min-height: var(--app-h, 100dvh);
   background: var(--bg-subtle);
   display: flex;
   flex-direction: column;
@@ -50,7 +50,7 @@
   max-width: 640px;
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-4) var(--space-7);
+  padding: var(--space-4) var(--space-3) var(--space-7);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -417,7 +417,7 @@
   width: min(520px, 100%);
   background: var(--bg-base);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: var(--space-4) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom));
+  padding: var(--space-4) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

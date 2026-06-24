@@ -19,7 +19,7 @@
     justify-content: center;
     gap: clamp(32px, 6vw, 96px);
     min-height: 100dvh;
-    padding: 48px;
+    padding: 32px;
     background: radial-gradient(
         900px 600px at 18% 22%,
         var(--teal-50),
@@ -110,8 +110,9 @@
   .device {
     display: block;
     position: relative;
-    width: 480px;
-    height: min(1000px, calc(100dvh - 48px));
+    width: 540px;
+    /* 상하 패딩(32px*2) 을 빼야 한 화면에 담겨 페이지 스크롤이 안 생긴다 */
+    height: min(1120px, calc(100dvh - 64px));
     background: var(--bg-base);
     border: 1px solid var(--border-default);
     border-radius: 36px;
@@ -134,6 +135,6 @@
 /* 아주 넓은 화면에서 폰을 더 키움 */
 @media (min-width: 1440px) {
   .device {
-    width: 540px;
+    width: 600px;
   }
 }

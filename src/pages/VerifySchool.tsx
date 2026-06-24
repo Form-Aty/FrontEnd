@@ -10,8 +10,6 @@ import styles from './Onboard.module.css';
 
 // 가입 + 학교 인증 (mockup 2). service.md §6 대학 이메일 인증.
 // 실 백엔드 흐름: signup(email,nickname,password) → verify(email,code) → login.
-const EMAIL_SUFFIX = '@univ.ac.kr';
-
 export function VerifySchool() {
   const navigate = useNavigate();
   const signup = useAuth((s) => s.signup);
@@ -26,8 +24,9 @@ export function VerifySchool() {
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
 
-  const fullEmail = `${email.trim()}${EMAIL_SUFFIX}`;
-  const formValid = email.trim().length >= 2 && nickname.trim().length >= 2 && password.length >= 8;
+  const fullEmail = email.trim().toLowerCase();
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullEmail);
+  const formValid = emailValid && nickname.trim().length >= 2 && password.length >= 8;
 
   const sendCode = async () => {
     if (!formValid) return;
@@ -72,30 +71,29 @@ export function VerifySchool() {
         </h1>
         <p className={styles.sub}>인증된 학교 구성원만 이용할 수 있어요.</p>
 
-        <div className={styles.emailRow}>
-          <input
-            className={styles.emailInput}
-            placeholder="이메일을 입력하세요"
-            inputMode="email"
-            value={email}
-            disabled={phase === 'code'}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-label="학교 이메일"
-          />
-          <span className={styles.suffix}>{EMAIL_SUFFIX}</span>
-        </div>
+        <input
+          className={styles.textInput}
+          type="email"
+          placeholder="학교 이메일 (you@univ.ac.kr)"
+          inputMode="email"
+          autoComplete="email"
+          value={email}
+          disabled={phase === 'code'}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-label="학교 이메일"
+        />
 
         {phase === 'form' && (
           <>
             <input
-              className={styles.codeInput}
+              className={styles.textInput}
               placeholder="닉네임 (2자 이상)"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               aria-label="닉네임"
             />
             <input
-              className={styles.codeInput}
+              className={styles.textInput}
               type="password"
               placeholder="비밀번호 (8자 이상)"
               autoComplete="new-password"

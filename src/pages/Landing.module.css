@@ -1,11 +1,11 @@
 .page {
-  min-height: 100dvh;
+  min-height: var(--app-h, 100dvh);
   max-width: 480px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   background: var(--bg-base);
-  padding: calc(var(--space-5) + env(safe-area-inset-top)) var(--space-5)
+  padding: calc(var(--space-5) + env(safe-area-inset-top)) var(--space-4)
     calc(var(--space-6) + env(safe-area-inset-bottom));
 }
 .brand {
@@ -24,9 +24,9 @@
 }
 .title {
   font-family: var(--font-display);
-  font-size: var(--text-display);
+  font-size: var(--text-display-lg);
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--text-strong);
   margin-top: var(--space-5);
@@ -34,12 +34,12 @@
 .lead {
   margin-top: var(--space-4);
   color: var(--text-muted);
-  font-size: var(--text-body);
-  line-height: 1.5;
+  font-size: var(--text-h3);
+  line-height: 1.55;
 }
 .illust {
   width: 100%;
-  max-width: 340px;
+  max-width: 400px;
   margin: var(--space-6) auto 0;
 }
 .actions {
