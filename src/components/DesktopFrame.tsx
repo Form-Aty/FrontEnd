@@ -9,20 +9,20 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
       <aside className={styles.pitch} aria-hidden>
         <img className={styles.brand} src="/logo.png" alt="" />
         <h1 className={styles.headline}>
-          응답은 응답으로,
+          설문은 설문으로,
           <br />
           대학생 <span className={styles.accent}>설문 품앗이</span>
         </h1>
         <p className={styles.lead}>
-          서로의 응답자가 되어주는 상호성 기반 설문 교환.
+          서로가 서로의 설문을 도와줘요.
           <br />
-          받은 만큼 갚으면 내 설문도 응답을 모읍니다.
+          함께 응답을 모으는 상호성 기반 설문 교환.
         </p>
 
         <ul className={styles.features}>
           <Feature
-            title="응답은 응답으로"
-            desc="받은 만큼 갚는 구조라 무임승차가 없어요."
+            title="설문은 설문으로"
+            desc="비싼 설문 대행 플랫폼 대신 무료로 설문이 가능해요."
             glyph={<GlyphSwap />}
           />
           <Feature

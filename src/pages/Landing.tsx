@@ -20,9 +20,9 @@ export function Landing() {
           대학생 품앗이
         </h1>
         <p className={styles.lead}>
-          응답은 응답으로,
+          설문은 설문으로,
           <br />
-          우리의 시간을 교환해요.
+          돈 없이 서로 도와요.
         </p>
         <img className={styles.illust} src="/landing.png" alt="설문을 주고받는 두 학생" />
       </div>
