@@ -78,6 +78,10 @@ export const api = {
     return http.post<{ verified: boolean }>('/auth/verify', input, { auth: false });
   },
 
+  resendVerification(input: { email: string }) {
+    return http.post<{ sent: boolean }>('/auth/verification/resend', input, { auth: false });
+  },
+
   login(input: { email: string; password: string }) {
     return http.post<TokenResponse>('/auth/login', input, { auth: false });
   },
