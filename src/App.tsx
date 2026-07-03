@@ -28,6 +28,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Navigate to="/verify" replace />} />
       <Route path="/verify" element={<VerifySchool />} />
       <Route path="/welcome" element={<Welcome />} />
 

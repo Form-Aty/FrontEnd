@@ -45,7 +45,7 @@ export function Login() {
       subtitle="학교 이메일로 로그인하고 폼앗이를 이어가요."
       footer={
         <>
-          아직 계정이 없나요? <Link to="/signup">가입하기</Link>
+          아직 계정이 없나요? <Link to="/verify">가입하기</Link>
         </>
       }
     >
