@@ -10,6 +10,7 @@ interface AuthState {
   authed: boolean;
   signup: (input: { email: string; nickname: string; password: string }) => Promise<{ userId: number }>;
   verify: (input: { email: string; code: string }) => Promise<void>;
+  resendVerification: (input: { email: string }) => Promise<void>;
   login: (input: { email: string; password: string }) => Promise<void>;
   logout: () => void;
 }
@@ -22,6 +23,10 @@ export const useAuth = create<AuthState>((set) => ({
 
   verify: async (input) => {
     await api.verify(input);
+  },
+
+  resendVerification: async (input) => {
+    await api.resendVerification(input);
   },
 
   login: async (input) => {

@@ -14,6 +14,7 @@ export function VerifySchool() {
   const navigate = useNavigate();
   const signup = useAuth((s) => s.signup);
   const verifyEmail = useAuth((s) => s.verify);
+  const resendVerification = useAuth((s) => s.resendVerification);
   const login = useAuth((s) => s.login);
   const push = useToast((s) => s.push);
 
@@ -23,6 +24,7 @@ export function VerifySchool() {
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
+  const [resending, setResending] = useState(false);
 
   const fullEmail = email.trim().toLowerCase();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullEmail);
@@ -34,11 +36,24 @@ export function VerifySchool() {
     try {
       await signup({ email: fullEmail, nickname: nickname.trim(), password });
       setPhase('code');
-      push('인증 메일을 보냈어요. (데모 코드: 000000)', 'default');
+      push('인증 메일을 보냈어요.', 'default');
     } catch (e) {
       if (e instanceof ApiError) push(e.message, 'warning');
     } finally {
       setBusy(false);
+    }
+  };
+
+  const resendCode = async () => {
+    if (!emailValid || resending) return;
+    setResending(true);
+    try {
+      await resendVerification({ email: fullEmail });
+      push('인증 메일을 다시 보냈어요.', 'default');
+    } catch (e) {
+      if (e instanceof ApiError) push(e.message, 'warning');
+    } finally {
+      setResending(false);
     }
   };
 
@@ -107,7 +122,7 @@ export function VerifySchool() {
         {phase === 'code' && (
           <input
             className={styles.codeInput}
-            placeholder="인증 코드 (000000)"
+            placeholder="인증 코드 6자리"
             inputMode="numeric"
             maxLength={6}
             value={code}
@@ -123,9 +138,21 @@ export function VerifySchool() {
             인증 메일 보내기
           </Button>
         ) : (
-          <Button size="lg" full loading={busy} disabled={code.length !== 6} onClick={verify}>
-            인증하고 시작하기
-          </Button>
+          <>
+            <Button size="lg" full loading={busy} disabled={code.length !== 6} onClick={verify}>
+              인증하고 시작하기
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              full
+              loading={resending}
+              disabled={busy || resending}
+              onClick={resendCode}
+            >
+              인증 메일 다시 보내기
+            </Button>
+          </>
         )}
         <p className={styles.lockNote}>
           <IconLock size={14} /> 개인 정보는 안전하게 보호돼요.
