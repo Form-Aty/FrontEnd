@@ -103,6 +103,83 @@
   border-color: var(--action-primary);
   box-shadow: 0 0 0 3px var(--surface-teal);
 }
+.codeInput:disabled {
+  color: var(--text-disabled);
+  background: var(--bg-subtle);
+  cursor: not-allowed;
+}
+
+.verificationStatus {
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-teal);
+  text-align: left;
+}
+.verificationExpired {
+  border-color: var(--status-danger);
+  background: var(--surface-coral);
+}
+.deliveryTarget {
+  color: var(--text-default);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  word-break: break-all;
+}
+.deliveryTarget strong {
+  color: var(--text-strong);
+}
+.timerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.timerValue {
+  color: var(--action-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-h2);
+  font-variant-numeric: tabular-nums;
+}
+.timerUrgent {
+  color: var(--status-owing);
+}
+.timerExpired {
+  color: var(--status-danger);
+}
+.timerTrack {
+  width: 100%;
+  height: 6px;
+  margin-top: var(--space-2);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--bg-sunken);
+}
+.timerBar {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--action-primary);
+  transition:
+    width 1s linear,
+    background-color var(--t-base);
+}
+.timerBarUrgent {
+  background: var(--status-owing);
+}
+.timerBarExpired {
+  background: var(--status-danger);
+}
+.codeHint {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
 
 /* 일반 텍스트 입력(이메일/닉네임/비밀번호) — 코드칸과 달리 좌측정렬·일반 자간 */
 .textInput {

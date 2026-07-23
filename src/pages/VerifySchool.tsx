@@ -1,12 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconBack } from '@/components/icons';
 import { IllustShield, IconLock } from '@/components/Illust';
 import { Button } from '@/components/Button';
 import { ApiError } from '@/api/errors';
+import type { VerificationWindow } from '@/api/api';
 import { useAuth } from '@/store/auth';
 import { useToast } from '@/store/ui';
 import styles from './Onboard.module.css';
+
+const VERIFICATION_TTL_MS = 5 * 60 * 1000;
+const RESEND_COOLDOWN_MS = 60 * 1000;
+
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(remainder).padStart(2, '0')}`;
+};
+
+const parseDeadline = (value: string, fallback: number) => {
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
 
 // 가입 + 학교 인증 (mockup 2). service.md §6 대학 이메일 인증.
 // 실 백엔드 흐름: signup(email,nickname,password) → verify(email,code) → login.
@@ -25,18 +40,51 @@ export function VerifySchool() {
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [resending, setResending] = useState(false);
+  const [verificationExpiresAt, setVerificationExpiresAt] = useState<number | null>(null);
+  const [resendAvailableAt, setResendAvailableAt] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
 
   const fullEmail = email.trim().toLowerCase();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullEmail);
   const formValid = emailValid && nickname.trim().length >= 2 && password.length >= 8;
+  const remainingSeconds =
+    verificationExpiresAt === null
+      ? 0
+      : Math.max(0, Math.ceil((verificationExpiresAt - now) / 1000));
+  const resendRemainingSeconds =
+    resendAvailableAt === null ? 0 : Math.max(0, Math.ceil((resendAvailableAt - now) / 1000));
+  const expired = phase === 'code' && remainingSeconds === 0;
+  const timerUrgent = !expired && remainingSeconds <= 60;
+  const timerProgress = Math.min(100, Math.max(0, (remainingSeconds / 300) * 100));
+
+  useEffect(() => {
+    if (phase !== 'code') return;
+    const tick = () => setNow(Date.now());
+    tick();
+    const interval = window.setInterval(tick, 1000);
+    return () => window.clearInterval(interval);
+  }, [phase, verificationExpiresAt, resendAvailableAt]);
+
+  const applyVerificationWindow = (windowInfo: VerificationWindow) => {
+    const receivedAt = Date.now();
+    setNow(receivedAt);
+    setVerificationExpiresAt(
+      parseDeadline(windowInfo.verificationExpiresAt, receivedAt + VERIFICATION_TTL_MS),
+    );
+    setResendAvailableAt(
+      parseDeadline(windowInfo.resendAvailableAt, receivedAt + RESEND_COOLDOWN_MS),
+    );
+  };
 
   const sendCode = async () => {
     if (!formValid) return;
     setBusy(true);
     try {
-      await signup({ email: fullEmail, nickname: nickname.trim(), password });
+      const response = await signup({ email: fullEmail, nickname: nickname.trim(), password });
+      applyVerificationWindow(response);
+      setCode('');
       setPhase('code');
-      push('인증 메일을 보냈어요.', 'default');
+      push('인증 메일을 보냈어요. 코드는 5분 동안 유효해요.', 'default');
     } catch (e) {
       if (e instanceof ApiError) push(e.message, 'warning');
     } finally {
@@ -48,8 +96,10 @@ export function VerifySchool() {
     if (!emailValid || resending) return;
     setResending(true);
     try {
-      await resendVerification({ email: fullEmail });
-      push('인증 메일을 다시 보냈어요.', 'default');
+      const response = await resendVerification({ email: fullEmail });
+      applyVerificationWindow(response);
+      setCode('');
+      push('새 인증 메일을 보냈어요. 제한시간이 다시 시작됐어요.', 'default');
     } catch (e) {
       if (e instanceof ApiError) push(e.message, 'warning');
     } finally {
@@ -64,7 +114,14 @@ export function VerifySchool() {
       await login({ email: fullEmail, password });
       navigate('/welcome');
     } catch (e) {
-      if (e instanceof ApiError) push(e.message, 'warning');
+      if (e instanceof ApiError) {
+        if (e.code === 'CODE_EXPIRED') {
+          const expiredAt = Date.now();
+          setNow(expiredAt);
+          setVerificationExpiresAt(expiredAt);
+        }
+        push(e.message, 'warning');
+      }
     } finally {
       setBusy(false);
     }
@@ -120,15 +177,61 @@ export function VerifySchool() {
         )}
 
         {phase === 'code' && (
-          <input
-            className={styles.codeInput}
-            placeholder="인증 코드 6자리"
-            inputMode="numeric"
-            maxLength={6}
-            value={code}
-            onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-            aria-label="인증 코드"
-          />
+          <>
+            <div
+              className={`${styles.verificationStatus} ${expired ? styles.verificationExpired : ''}`}
+            >
+              <p className={styles.deliveryTarget}>
+                <strong>{fullEmail}</strong>로 보낸 인증코드를 입력해 주세요.
+              </p>
+              <div className={styles.timerRow}>
+                <span>{expired ? '유효시간 만료' : '남은 시간'}</span>
+                <strong
+                  className={`${styles.timerValue} ${
+                    expired ? styles.timerExpired : timerUrgent ? styles.timerUrgent : ''
+                  }`}
+                >
+                  {formatDuration(remainingSeconds)}
+                </strong>
+              </div>
+              <div
+                className={styles.timerTrack}
+                role="progressbar"
+                aria-label="인증코드 남은 시간"
+                aria-valuemin={0}
+                aria-valuemax={300}
+                aria-valuenow={remainingSeconds}
+              >
+                <span
+                  className={`${styles.timerBar} ${
+                    expired ? styles.timerBarExpired : timerUrgent ? styles.timerBarUrgent : ''
+                  }`}
+                  style={{ width: `${timerProgress}%` }}
+                />
+              </div>
+              <p
+                className={styles.codeHint}
+                id="verification-code-hint"
+                aria-live="polite"
+              >
+                {expired
+                  ? '새 인증 메일을 받으면 5분 제한시간이 다시 시작돼요.'
+                  : '코드는 발송 후 5분 동안 유효해요. 메일이 없다면 스팸함도 확인해 주세요.'}
+              </p>
+            </div>
+            <input
+              className={styles.codeInput}
+              placeholder={expired ? '새 인증 메일을 받아 주세요' : '인증 코드 6자리'}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={6}
+              value={code}
+              disabled={expired || busy}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+              aria-label="인증 코드"
+              aria-describedby="verification-code-hint"
+            />
+          </>
         )}
       </div>
 
@@ -139,7 +242,13 @@ export function VerifySchool() {
           </Button>
         ) : (
           <>
-            <Button size="lg" full loading={busy} disabled={code.length !== 6} onClick={verify}>
+            <Button
+              size="lg"
+              full
+              loading={busy}
+              disabled={code.length !== 6 || expired}
+              onClick={verify}
+            >
               인증하고 시작하기
             </Button>
             <Button
@@ -147,10 +256,14 @@ export function VerifySchool() {
               size="sm"
               full
               loading={resending}
-              disabled={busy || resending}
+              disabled={busy || resending || resendRemainingSeconds > 0}
               onClick={resendCode}
             >
-              인증 메일 다시 보내기
+              {resendRemainingSeconds > 0
+                ? `다시 보내기 (${formatDuration(resendRemainingSeconds)})`
+                : expired
+                  ? '새 인증 메일 받기'
+                  : '인증 메일 다시 보내기'}
             </Button>
           </>
         )}

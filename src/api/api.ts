@@ -30,6 +30,19 @@ export interface TokenResponse {
   refreshToken: string;
 }
 
+export interface VerificationWindow {
+  verificationExpiresAt: string;
+  resendAvailableAt: string;
+}
+
+export interface SignupResponse extends VerificationWindow {
+  userId: number;
+}
+
+export interface ResendVerificationResponse extends VerificationWindow {
+  sent: boolean;
+}
+
 type QuestionInput = Omit<SurveyQuestion, 'id' | 'surveyId' | 'sectionId' | 'position' | 'branchRules'> & {
   sectionClientId?: string | null;
   branchRules?: Record<string, string>;
@@ -73,7 +86,7 @@ export interface UpdateSurveyInput {
 export const api = {
   // ───────────────────────── Auth ─────────────────────────
   signup(input: { email: string; nickname: string; password: string }) {
-    return http.post<{ userId: number }>('/auth/signup', input, { auth: false });
+    return http.post<SignupResponse>('/auth/signup', input, { auth: false });
   },
 
   verify(input: { email: string; code: string }) {
@@ -81,7 +94,9 @@ export const api = {
   },
 
   resendVerification(input: { email: string }) {
-    return http.post<{ sent: boolean }>('/auth/verification/resend', input, { auth: false });
+    return http.post<ResendVerificationResponse>('/auth/verification/resend', input, {
+      auth: false,
+    });
   },
 
   login(input: { email: string; password: string }) {

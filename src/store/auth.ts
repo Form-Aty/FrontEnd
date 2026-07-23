@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { api } from '@/api/api';
+import type { ResendVerificationResponse, SignupResponse } from '@/api/api';
 import { setUnauthorizedHandler, tokenStore } from '@/api/tokenStore';
 import type { User } from '@/types/domain';
 
@@ -8,9 +9,13 @@ import type { User } from '@/types/domain';
 interface AuthState {
   user: User | null;
   authed: boolean;
-  signup: (input: { email: string; nickname: string; password: string }) => Promise<{ userId: number }>;
+  signup: (input: {
+    email: string;
+    nickname: string;
+    password: string;
+  }) => Promise<SignupResponse>;
   verify: (input: { email: string; code: string }) => Promise<void>;
-  resendVerification: (input: { email: string }) => Promise<void>;
+  resendVerification: (input: { email: string }) => Promise<ResendVerificationResponse>;
   login: (input: { email: string; password: string }) => Promise<void>;
   logout: () => void;
 }
@@ -25,9 +30,7 @@ export const useAuth = create<AuthState>((set) => ({
     await api.verify(input);
   },
 
-  resendVerification: async (input) => {
-    await api.resendVerification(input);
-  },
+  resendVerification: (input) => api.resendVerification(input),
 
   login: async (input) => {
     const res = await api.login(input);
