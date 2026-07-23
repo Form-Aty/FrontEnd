@@ -2,12 +2,12 @@
   min-height: var(--app-h, 100dvh);
   background: var(--bg-base);
 }
+/* 당근처럼 크롬은 조용하게 — 반투명/블러 없는 솔리드 헤더 */
 .header {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: color-mix(in srgb, var(--bg-base) 90%, transparent);
-  backdrop-filter: saturate(1.1) blur(10px);
+  background: var(--bg-base);
   border-bottom: 1px solid var(--border-default);
   padding-top: env(safe-area-inset-top);
 }

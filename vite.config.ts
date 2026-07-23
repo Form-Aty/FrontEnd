@@ -29,7 +29,7 @@ export default defineConfig({
         short_name: '폼앗이',
         description: '대학생 설문 품앗이 — 응답은 응답으로 갚습니다.',
         lang: 'ko',
-        theme_color: '#14b8a0',
+        theme_color: '#34a866',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',

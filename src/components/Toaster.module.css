@@ -10,6 +10,7 @@
   width: min(420px, calc(100% - 32px));
   pointer-events: none;
 }
+/* §14 토스트 — gray-900 배경, 화이트 14px/400, 아이콘 없음, 한 문장. 톤 무관 단일 스타일. */
 .toast {
   pointer-events: auto;
   background: var(--gray-900);
@@ -17,18 +18,9 @@
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: var(--shadow-lg);
   animation: toast-in var(--t-base);
-}
-.positive {
-  background: var(--teal-600);
-}
-.warning {
-  background: var(--amber-700);
-}
-.danger {
-  background: var(--coral-600);
 }
 @keyframes toast-in {
   from {

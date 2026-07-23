@@ -98,14 +98,15 @@
   background: var(--green-soft);
 }
 
+/* §14 인라인 성공 — 글로우 대신 teal-100 배경 플래시 후 원복 */
 .pulse {
-  animation: gauge-pulse 0.85s ease-out 1;
+  animation: gauge-flash 300ms var(--ease-standard) 1;
 }
-@keyframes gauge-pulse {
+@keyframes gauge-flash {
   0% {
-    box-shadow: 0 0 0 0 rgba(52, 168, 102, 0.4);
+    background-color: var(--surface-teal);
   }
   100% {
-    box-shadow: 0 0 0 16px rgba(52, 168, 102, 0);
+    background-color: transparent;
   }
 }

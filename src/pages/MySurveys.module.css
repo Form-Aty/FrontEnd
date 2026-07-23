@@ -110,7 +110,8 @@
   font-size: var(--text-sm);
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-full);
-  box-shadow: 0 6px 16px rgba(52, 168, 102, 0.4);
+  /* 틴트 그림자 금지 (§12.1) — 뉴트럴 그림자만 */
+  box-shadow: var(--shadow-md);
 }
 .fab:active {
   transform: scale(0.97);

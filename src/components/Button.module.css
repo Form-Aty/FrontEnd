@@ -1,10 +1,12 @@
+/* karrot 도미넌트 지오메트리 — 풀 필(9999px). 비활성은 §14: gray-200 배경 + gray-400 텍스트,
+ * 투명도/지오메트리 변화 없음(재활성 시 프레임 안정). */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-weight: 600;
   font-size: var(--text-body);
   line-height: 1;
@@ -18,7 +20,6 @@
   transform: scale(0.98); /* §4.1 */
 }
 .btn:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -29,6 +30,13 @@
 .primary:hover:not(:disabled) {
   background: var(--action-primary-hover);
 }
+.primary:active:not(:disabled) {
+  background: var(--action-primary-pressed);
+}
+.primary:disabled {
+  background: var(--action-disabled-bg);
+  color: var(--action-disabled-text);
+}
 
 .secondary {
   background: transparent;
@@ -37,6 +45,10 @@
 }
 .secondary:hover:not(:disabled) {
   border-color: var(--text-muted);
+}
+.secondary:disabled {
+  border-color: var(--border-default);
+  color: var(--action-disabled-text);
 }
 
 .ghost {
@@ -47,13 +59,20 @@
 .ghost:hover:not(:disabled) {
   background: var(--surface-teal);
 }
+.ghost:disabled {
+  color: var(--action-disabled-text);
+}
 
 .danger {
   background: var(--status-danger);
-  color: #fff;
+  color: var(--action-primary-text);
 }
 .danger:hover:not(:disabled) {
   background: var(--coral-600);
+}
+.danger:disabled {
+  background: var(--action-disabled-bg);
+  color: var(--action-disabled-text);
 }
 
 .full {

@@ -101,36 +101,41 @@
   gap: 2px;
 }
 
+/* 그라디언트 없는 플랫 리스트 카드 — 팀 카드와 동일 문법 (§12.2 콘텐츠가 브랜드) */
 .aiCard {
   width: 100%;
-  display: flex;
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 44px 1fr 18px;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-3);
-  background: linear-gradient(120deg, var(--teal-50), var(--bg-base) 70%);
-  border: 1px solid var(--teal-100);
+  background: var(--bg-base);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4) var(--space-5);
+  color: var(--text-default);
   text-align: left;
-  transition: transform var(--t-base);
+  transition: border-color var(--t-base), transform var(--t-base);
+}
+.aiCard:hover {
+  border-color: var(--border-strong);
 }
 .aiCard:active {
-  transform: scale(0.99);
+  transform: scale(0.98);
+}
+.aiIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--surface-teal);
+  color: var(--teal-700);
+  display: grid;
+  place-items: center;
 }
 .aiText {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-.aiCta {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--action-primary);
-}
-.robot {
-  flex: 0 0 auto;
 }

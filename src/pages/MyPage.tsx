@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/AppShell';
-import { IconBell, IconGear, IconChevronRight, IconCredit, IconReport, IconTeam, IconSparkle } from '@/components/icons';
-import { IconLock } from '@/components/Illust';
+import { IconBell, IconGear, IconChevronRight, IconCredit, IconReport, IconTeam, IconSparkle, IconMoon } from '@/components/icons';
 import { useMe, useReciprocity } from '@/api/queries';
 import { useAuth } from '@/store/auth';
 import { useToast, useUi } from '@/store/ui';
@@ -65,7 +64,7 @@ export function MyPage() {
         <MenuItem icon={<IconHelp />} label="도움말" onClick={() => push('도움말은 준비 중이에요.')} />
         <li className={styles.item}>
           <span className={styles.itemLeft}>
-            <IconLock size={20} /> 다크 모드
+            <IconMoon size={20} /> 다크 모드
           </span>
           <button
             className={`${styles.switch} ${theme === 'dark' ? styles.switchOn : ''}`}

@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { IconBack, IconChevronRight } from '@/components/icons';
-import { IllustConfetti } from '@/components/Illust';
+import { IconBack, IconChevronRight, IconCheck } from '@/components/icons';
 import { Button } from '@/components/Button';
 import { useMe } from '@/api/queries';
 import styles from './Onboard.module.css';
 
-// 환영 (mockup 3). 가입 시 지급된 시드 크레딧 안내.
+// 환영 (mockup 3). 가입 시 지급된 시드 크레딧 안내. 조용한 확인 — 이모지/일러스트 없음 (§10).
 export function Welcome() {
   const navigate = useNavigate();
   const { data: me } = useMe();
@@ -17,8 +16,10 @@ export function Welcome() {
       </button>
 
       <div className={styles.center}>
-        <IllustConfetti size={120} />
-        <h1 className={styles.title}>환영합니다! 🎉</h1>
+        <span className={styles.doneCheck} aria-hidden>
+          <IconCheck size={32} />
+        </span>
+        <h1 className={styles.title}>가입이 완료되었어요</h1>
         <p className={styles.sub}>시작 크레딧 {seedCredit}개를 드렸어요.</p>
 
         <button className={styles.creditCard} onClick={() => navigate('/credits')}>
@@ -35,7 +36,7 @@ export function Welcome() {
 
       <div className={styles.actions}>
         <Button size="lg" full onClick={() => navigate('/feed')}>
-          폼앗이 둘러보기
+          둘러보기
         </Button>
       </div>
     </div>

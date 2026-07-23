@@ -68,12 +68,10 @@ export function ProgressBar({ value, max }: { value: number; max: number }) {
   );
 }
 
+// §14 빈 상태 — 따뜻한 한 줄 + 낮은 부담의 안내. 일러스트/마크 없음.
 export function EmptyState({ title, body }: { title: string; body?: string }) {
   return (
     <div className={styles.empty}>
-      <div className={styles.emptyMark} aria-hidden>
-        ↺
-      </div>
       <p className="h3">{title}</p>
       {body && <p className="sm muted">{body}</p>}
     </div>

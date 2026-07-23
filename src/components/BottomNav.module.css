@@ -9,7 +9,6 @@
   background: var(--bg-base);
   border-top: 1px solid var(--border-default);
   padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -1px 12px rgba(20, 24, 33, 0.04);
 }
 .tab {
   flex: 1;
@@ -45,7 +44,8 @@
   color: var(--action-primary-text);
   display: grid;
   place-items: center;
-  box-shadow: 0 6px 16px rgba(52, 168, 102, 0.4);
+  /* 그린은 장식하지 않는다 — 그림자는 중립 뉴트럴만 (§12.1) */
+  box-shadow: var(--shadow-md);
   transition: background var(--t-base), transform var(--t-base);
 }
 .fab:hover {

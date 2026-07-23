@@ -50,7 +50,13 @@
 
   --action-primary: var(--teal-500);
   --action-primary-hover: var(--teal-600);
+  --action-primary-pressed: var(--teal-700);
   --action-primary-text: var(--gray-0);
+  /* 비활성 — §14 States: 배경 gray-200 / 텍스트 gray-400, 투명도·색 반전 금지 */
+  --action-disabled-bg: var(--gray-200);
+  --action-disabled-text: var(--gray-400);
+  /* 스켈레톤 — §14: gray-200 블록 + 1.2s 셔머(8% 화이트) */
+  --skeleton-bg: var(--gray-200);
 
   --credit-positive: var(--teal-600); /* 적립 */
   --credit-negative: var(--gray-600); /* 차감 (중립적으로) */
@@ -102,9 +108,13 @@
   --max-feed: 640px;
   --max-dashboard: 1080px;
 
-  /* 모션 (§6) */
-  --t-base: 200ms ease-out;
-  --t-page: 250ms ease-out;
+  /* 모션 (§6 + karrot §15) — 스프링/오버슈트 금지. 세 곡선만 사용 */
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1); /* 등장 — 시트/토스트/푸시 */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1); /* 퇴장 — 디스미스/팝 */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* 양방향 전환 */
+  --t-base: 200ms var(--ease-standard);
+  --t-page: 250ms var(--ease-enter);
+  --t-exit: 150ms var(--ease-exit);
 }
 
 /* 다크 테마 — semantic만 덮어쓰면 전체 전환 (§1.3) */
@@ -119,6 +129,9 @@
   --border-strong: #3a414d;
 
   --credit-negative: #98a1b3;
+  --action-disabled-bg: #2a313d;
+  --action-disabled-text: #6b7385;
+  --skeleton-bg: #2a313d;
   --surface-teal: rgba(20, 184, 160, 0.12);
   --surface-amber: rgba(245, 165, 36, 0.14);
   --surface-coral: rgba(240, 80, 110, 0.14);

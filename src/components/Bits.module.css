@@ -78,14 +78,3 @@
   padding: var(--space-8) var(--space-4);
   color: var(--text-muted);
 }
-.emptyMark {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-600);
-  font-size: 28px;
-  margin-bottom: var(--space-2);
-}

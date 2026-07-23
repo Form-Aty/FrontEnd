@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconBack } from '@/components/icons';
-import { IllustShield, IconLock } from '@/components/Illust';
 import { Button } from '@/components/Button';
 import { ApiError } from '@/api/errors';
 import type { VerificationWindow } from '@/api/api';
@@ -135,7 +134,6 @@ export function VerifySchool() {
       <p className={styles.headerTitle}>학교 인증</p>
 
       <div className={styles.center}>
-        <IllustShield size={120} />
         <h1 className={styles.title}>
           학교 이메일로
           <br />
@@ -267,9 +265,8 @@ export function VerifySchool() {
             </Button>
           </>
         )}
-        <p className={styles.lockNote}>
-          <IconLock size={14} /> 개인 정보는 안전하게 보호돼요.
-        </p>
+        {/* §12.4 신뢰는 배지가 아니라 차분함에서 — 자물쇠 아이콘 없이 본문 텍스트로 */}
+        <p className={styles.lockNote}>개인 정보는 안전하게 보호돼요.</p>
       </div>
     </div>
   );

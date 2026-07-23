@@ -2,9 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/AppShell';
 import { Card } from '@/components/Bits';
 import { ReciprocityGauge } from '@/components/ReciprocityGauge';
-import { IllustRobot } from '@/components/Illust';
 import { Skeleton } from '@/components/Skeleton';
-import { IconPlus, IconChevronRight, IconTeam } from '@/components/icons';
+import { IconPlus, IconChevronRight, IconTeam, IconSparkle } from '@/components/icons';
 import { useMe, useReciprocity, useTeams } from '@/api/queries';
 import styles from './Home.module.css';
 
@@ -62,16 +61,14 @@ export function Home() {
       </button>
 
       <button className={styles.aiCard} onClick={() => navigate('/ai')}>
-        <div className={styles.aiText}>
-          <p className="h3">AI 설문 설계로</p>
-          <p className="sm muted">더 좋은 설문을 만들어보세요</p>
-          <span className={styles.aiCta}>
-            시작하기 <IconChevronRight size={16} />
-          </span>
-        </div>
-        <div className={styles.robot} aria-hidden>
-          <IllustRobot size={76} />
-        </div>
+        <span className={styles.aiIcon} aria-hidden>
+          <IconSparkle size={22} />
+        </span>
+        <span className={styles.aiText}>
+          <span className="h3">AI 설문 설계</span>
+          <span className="sm muted">유도질문·이중질문을 짚어드려요</span>
+        </span>
+        <IconChevronRight size={18} />
       </button>
     </AppShell>
   );
