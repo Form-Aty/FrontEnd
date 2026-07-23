@@ -18,6 +18,7 @@
 }
 .body {
   flex: 1;
+  min-height: 0; /* 작은 뷰포트에서 일러스트가 줄어들 수 있게 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,7 +30,7 @@
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--text-strong);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
 }
 .lead {
   margin-top: var(--space-3);
@@ -37,10 +38,13 @@
   font-size: var(--text-body);
   line-height: 1.6;
 }
+/* 뷰포트가 낮아도(사파리 툴바 등) CTA 가 잘리지 않게 높이를 화면에 연동 */
 .illust {
   width: 100%;
   max-width: 400px;
-  margin: var(--space-6) auto 0;
+  max-height: min(400px, calc(var(--app-h, 100dvh) * 0.3));
+  object-fit: contain;
+  margin: var(--space-5) auto 0;
 }
 .actions {
   display: flex;

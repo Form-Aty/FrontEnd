@@ -7,8 +7,16 @@
 }
 .deviceWrap,
 .device,
+.screen,
 .viewport {
   display: contents;
+}
+.island,
+.btnAction,
+.btnVolUp,
+.btnVolDown,
+.btnPower {
+  display: none;
 }
 
 /* ── 태블릿 이상: 항상 아이폰 비율(390×844)로 고정된 폰 프레임 ──
@@ -35,21 +43,83 @@
     display: block;
     flex: 0 0 auto;
   }
+  /* ── CSS 아이폰 목업: 티타늄 베젤 ── */
   .device {
     display: block;
     position: relative;
-    /* 아이폰 비율 고정: 430:932 (Pro Max). 높이 기준으로 잡고 뷰포트 너비에도 맞춘다. */
-    aspect-ratio: 430 / 932;
-    height: min(1040px, calc(100dvh - 64px), calc((100vw - 64px) * (932 / 430)));
-    background: var(--bg-base);
-    border: 1px solid var(--border-default);
-    border-radius: 36px;
-    box-shadow: 0 40px 90px -30px rgba(20, 24, 33, 0.4), 0 12px 32px rgba(20, 24, 33, 0.12);
-    overflow: hidden;
+    /* 스크린(베젤 안쪽)이 정확히 430:932 (Pro Max) 비율이 되도록
+     * 베젤 두께(11px×2)를 빼고 더해 크기를 계산한다. */
+    --device-h: min(1040px, calc(100dvh - 64px), calc((100vw - 96px) * (932 / 430)));
+    height: var(--device-h);
+    width: calc((var(--device-h) - 22px) * 430 / 932 + 22px);
+    padding: 11px; /* 베젤 두께 */
+    background: linear-gradient(145deg, #3a3a41, #17171b 40%, #101014 70%, #2c2c33);
+    border-radius: 58px;
+    box-shadow:
+      inset 0 0 0 2px #5c5c66, /* 티타늄 엣지 */
+      inset 0 0 0 4px #1a1a1f,
+      0 40px 90px -30px rgba(20, 24, 33, 0.45),
+      0 12px 32px rgba(20, 24, 33, 0.14);
     /* 프레임 안에서 100dvh 대신 아이폰 논리 높이를 쓰도록 */
     --app-h: 932px;
   }
-  /* 앱은 항상 아이폰 논리 해상도(430×932)로 레이아웃하고 프레임에 맞춰 스케일 —
+  .screen {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-base);
+    border-radius: 47px;
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+  /* 다이내믹 아일랜드 — 헤더 중앙(빈 영역) 위에 떠 있다 */
+  .island {
+    display: block;
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 108px;
+    height: 30px;
+    background: #000;
+    border-radius: 999px;
+    z-index: 40;
+    pointer-events: none;
+  }
+  /* 사이드 버튼 (좌: 액션/볼륨, 우: 전원) */
+  .btnAction,
+  .btnVolUp,
+  .btnVolDown,
+  .btnPower {
+    display: block;
+    position: absolute;
+    width: 4px;
+    background: linear-gradient(90deg, #4a4a52, #26262c);
+    border-radius: 2px;
+  }
+  .btnAction {
+    left: -3px;
+    top: 18%;
+    height: 3.2%;
+  }
+  .btnVolUp {
+    left: -3px;
+    top: 25%;
+    height: 6.5%;
+  }
+  .btnVolDown {
+    left: -3px;
+    top: 33%;
+    height: 6.5%;
+  }
+  .btnPower {
+    right: -3px;
+    top: 27%;
+    height: 10%;
+    background: linear-gradient(90deg, #26262c, #4a4a52);
+  }
+  /* 앱은 항상 아이폰 논리 해상도(430×932)로 레이아웃하고 스크린에 맞춰 스케일 —
    * 어떤 해상도에서도 글자/여백 비율이 실기기와 동일하다.
    * --frame-scale 은 DesktopFrame.tsx 의 ResizeObserver 가 넣어준다.
    * transform → position:fixed 자손(하단탭/시트/토스트)의 컨테이닝 블록이 되어 프레임에 갇힌다 */
@@ -75,10 +145,10 @@
   }
   /* 카피 영역이 생기는 만큼 너비 제약도 함께 계산 */
   .device {
-    height: min(
+    --device-h: min(
       1040px,
       calc(100dvh - 64px),
-      calc((100vw - min(500px, 36vw) - clamp(48px, 8vw, 160px) - 64px) * (932 / 430))
+      calc((100vw - min(500px, 36vw) - clamp(48px, 8vw, 160px) - 96px) * (932 / 430))
     );
   }
 

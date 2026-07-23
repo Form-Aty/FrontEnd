@@ -8,10 +8,10 @@ const LOGICAL_H = 932;
 // 앱은 항상 390×844 로 레이아웃되고 프레임 크기에 맞춰 스케일된다(비율·글자 크기 균일).
 // 모바일: 프레임 없이 앱이 화면을 꽉 채움(요소들은 display:contents 로 통과).
 export function DesktopFrame({ children }: { children: ReactNode }) {
-  const deviceRef = useRef<HTMLDivElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    const el = deviceRef.current;
+    const el = screenRef.current;
     if (!el) return;
     const apply = () => {
       // display:contents(모바일)면 크기가 0 — 스케일 미적용
@@ -60,9 +60,17 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
       </aside>
 
       <div className={styles.deviceWrap}>
-        <div className={styles.device} ref={deviceRef}>
-          <div id="app-scroll" className={styles.viewport}>
-            {children}
+        {/* CSS 아이폰 목업 — 티타늄 베젤 + 다이내믹 아일랜드 + 사이드 버튼 */}
+        <div className={styles.device}>
+          <span className={styles.btnAction} aria-hidden />
+          <span className={styles.btnVolUp} aria-hidden />
+          <span className={styles.btnVolDown} aria-hidden />
+          <span className={styles.btnPower} aria-hidden />
+          <div className={styles.screen} ref={screenRef}>
+            <span className={styles.island} aria-hidden />
+            <div id="app-scroll" className={styles.viewport}>
+              {children}
+            </div>
           </div>
         </div>
       </div>
