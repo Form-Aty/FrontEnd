@@ -60,14 +60,13 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
       </aside>
 
       <div className={styles.deviceWrap}>
-        {/* CSS 아이폰 목업 — 티타늄 베젤 + 다이내믹 아일랜드 + 사이드 버튼 */}
+        {/* CSS 아이폰 목업 — 티타늄 베젤 + 사이드 버튼 (노치는 콘텐츠를 가려 넣지 않는다) */}
         <div className={styles.device}>
           <span className={styles.btnAction} aria-hidden />
           <span className={styles.btnVolUp} aria-hidden />
           <span className={styles.btnVolDown} aria-hidden />
           <span className={styles.btnPower} aria-hidden />
           <div className={styles.screen} ref={screenRef}>
-            <span className={styles.island} aria-hidden />
             <div id="app-scroll" className={styles.viewport}>
               {children}
             </div>

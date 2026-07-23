@@ -11,7 +11,6 @@
 .viewport {
   display: contents;
 }
-.island,
 .btnAction,
 .btnVolUp,
 .btnVolDown,
@@ -72,20 +71,6 @@
     border-radius: 47px;
     overflow: hidden;
     transform: translateZ(0);
-  }
-  /* 다이내믹 아일랜드 — 헤더 중앙(빈 영역) 위에 떠 있다 */
-  .island {
-    display: block;
-    position: absolute;
-    top: 13px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 108px;
-    height: 30px;
-    background: #000;
-    border-radius: 999px;
-    z-index: 40;
-    pointer-events: none;
   }
   /* 사이드 버튼 (좌: 액션/볼륨, 우: 전원) */
   .btnAction,
