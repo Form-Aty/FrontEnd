@@ -208,7 +208,8 @@ export type AiCreditReason =
   | 'PURCHASE'
   | 'SPEND_DESIGN'
   | 'SPEND_AUDIT'
-  | 'BRIDGE';
+  | 'BRIDGE'
+  | 'REFUND_AI_FAILURE';
 
 export interface AiCreditLedgerEntry {
   id: number;
@@ -228,9 +229,16 @@ export interface AiSession {
   feature: AiFeature;
   inputSummary: string;
   outputJson: unknown;
+  requestId?: string | null;
+  status?: 'PENDING' | 'COMPLETED' | 'FAILED';
+  provider?: string | null;
+  model?: string | null;
+  providerResponseId?: string | null;
   tokensIn: number | null;
   tokensOut: number | null;
   costUsd: number | null;
+  latencyMs?: number | null;
+  errorCode?: string | null;
   createdAt: string;
 }
 
@@ -266,25 +274,85 @@ export type AiIssueType =
   | 'double_barreled'
   | 'ambiguous'
   | 'missing_option'
-  | 'scale_imbalance';
+  | 'scale_imbalance'
+  | 'cognitive_burden'
+  | 'sensitive_required'
+  | 'response_mismatch';
 
 export interface AuditIssue {
   index: number;
   type: AiIssueType;
+  severity: 'warning' | 'error';
   reason: string;
   suggestion: string;
+  suggestedText: string;
 }
 
 export interface AuditResult {
   issues: AuditIssue[];
+  qualityScore: number;
+  nextSteps: string[];
+  validationNotice: string;
 }
 
 // AI 문항 생성 출력
-export type GeneratedQuestionType = 'single' | 'multi' | 'likert' | 'open';
 export interface GeneratedQuestion {
-  type: GeneratedQuestionType;
+  sectionIndex: number;
+  type: QuestionType;
   text: string;
-  options?: string[];
+  description: string;
+  required: boolean;
+  options: string[];
+  scaleMax: number;
+  scaleMinLabel: string;
+  scaleMaxLabel: string;
+  construct: string;
+  rationale: string;
+}
+
+export interface GeneratedSection {
+  title: string;
+  description: string;
+}
+
+export interface ResearchBasis {
+  code: string;
+  title: string;
+  doi: string;
+  appliedRule: string;
+}
+
+export interface GenerateSurveyInput {
+  researchQuestion: string;
+  topic: string;
+  targetAudience: string;
+  decisionContext: string;
+  questionCount: number;
+  constraints: string;
+}
+
+export interface GeneratedSurvey {
+  title: string;
+  description: string;
+  researchQuestion: string;
+  category: string;
+  estimatedMinutes: number;
+  sections: GeneratedSection[];
+  questions: GeneratedQuestion[];
+  audit: AuditResult;
+  researchBasis: ResearchBasis[];
+  validationSteps: string[];
+  validationNotice: string;
+}
+
+export interface AuditQuestionInput {
+  text: string;
+  type: QuestionType;
+  options: string[];
+  scaleMax: number;
+  scaleMinLabel: string;
+  scaleMaxLabel: string;
+  required: boolean;
 }
 
 // 카테고리 (설문 등록/피드 칩)

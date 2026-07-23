@@ -55,6 +55,23 @@
   flex-direction: column;
   gap: var(--space-4);
 }
+.aiImportNotice {
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-teal);
+}
+.aiImportNotice strong {
+  color: var(--teal-700);
+  font-size: var(--text-sm);
+}
+.aiImportNotice p {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
 
 .cardBase {
   background: var(--bg-base);

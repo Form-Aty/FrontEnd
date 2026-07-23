@@ -3,9 +3,11 @@
 // import 경로만 바꾸면 된다. 엔벨로프 언래핑/인증/리프레시는 http 계층이 담당.
 import type {
   AiCreditLedgerEntry,
+  AuditQuestionInput,
   AuditResult,
   CreditLedgerEntry,
-  GeneratedQuestion,
+  GeneratedSurvey,
+  GenerateSurveyInput,
   Report,
   ReportReason,
   Survey,
@@ -178,17 +180,23 @@ export const api = {
     return http.get<{ balance: number; ledger: AiCreditLedgerEntry[] }>('/credits/ai');
   },
 
-  // ─────────────────────── AI (유료) ───────────────────────
-  aiRefine(goal: string) {
-    return http.post<{ questions: string[]; researchQuestion: string }>('/ai/refine', { goal });
+  // ─────────────────────── AI 설문 설계 ───────────────────────
+  aiRefine(input: { goal: string; targetAudience: string; decisionContext: string }) {
+    return http.post<{ questions: string[]; researchQuestion: string }>('/ai/refine', input);
   },
 
-  aiGenerate(researchQuestion: string) {
-    return http.post<{ questions: GeneratedQuestion[] }>('/ai/generate', { researchQuestion });
+  aiGenerate(input: GenerateSurveyInput, idempotencyKey: string) {
+    return http.post<GeneratedSurvey>('/ai/generate', input, {
+      headers: { 'Idempotency-Key': idempotencyKey },
+      timeoutMs: 120_000,
+    });
   },
 
-  aiAudit(questions: string[]) {
-    return http.post<AuditResult>('/ai/audit', { questions });
+  aiAudit(questions: AuditQuestionInput[], idempotencyKey: string) {
+    return http.post<AuditResult>('/ai/audit', { questions }, {
+      headers: { 'Idempotency-Key': idempotencyKey },
+      timeoutMs: 90_000,
+    });
   },
 
   purchaseAiCredit(amount: number) {

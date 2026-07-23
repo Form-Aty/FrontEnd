@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Card, CreditAmount, EmptyState } from '@/components/Bits';
 import { Skeleton } from '@/components/Skeleton';
-import { Button } from '@/components/Button';
 import { useAiCredit, useResponseCredit } from '@/api/queries';
-import { api } from '@/api/api';
-import { useInvalidateAll } from '@/api/queries';
-import { useToast } from '@/store/ui';
 import { dateLabel } from '@/lib/format';
 import type { AiCreditReason, CreditReason } from '@/types/domain';
 import styles from './Credits.module.css';
@@ -23,26 +19,13 @@ const AI_REASON: Record<AiCreditReason, string> = {
   SPEND_DESIGN: '문항 생성 사용',
   SPEND_AUDIT: '편향 감수 사용',
   BRIDGE: '품앗이 브릿지 적립',
+  REFUND_AI_FAILURE: 'AI 요청 실패 환불',
 };
 
 export function Credits() {
   const [tab, setTab] = useState<'response' | 'ai'>('response');
   const resp = useResponseCredit();
   const ai = useAiCredit();
-  const invalidate = useInvalidateAll();
-  const push = useToast((s) => s.push);
-  const [buying, setBuying] = useState(false);
-
-  const buy = async () => {
-    setBuying(true);
-    try {
-      await api.purchaseAiCredit(20);
-      invalidate();
-      push('AI 크레딧 20개를 충전했어요.', 'positive');
-    } finally {
-      setBuying(false);
-    }
-  };
 
   const isResp = tab === 'response';
   const balance = isResp ? resp.data?.balance ?? 0 : ai.data?.balance ?? 0;
@@ -79,13 +62,8 @@ export function Credits() {
         <p className={styles.balanceNote}>
           {isResp
             ? '남의 설문에 응답하면 쌓이고, 내 설문이 응답을 받으면 차감돼요. 현금화는 할 수 없어요.'
-            : 'AI 설계·감수에 쓰는 크레딧이에요. 충전할 수 있고, 품앗이 브릿지로도 적립돼요.'}
+            : 'AI 설계·감수는 무료 베타로 운영 중이에요. 안정적인 운영을 위해 사용자별 호출 한도가 적용돼요.'}
         </p>
-        {!isResp && (
-          <Button size="sm" loading={buying} onClick={buy} className={styles.buyBtn}>
-            20 크레딧 충전
-          </Button>
-        )}
       </Card>
 
       <h2 className={`h3 ${styles.ledgerHead}`}>거래 내역</h2>
