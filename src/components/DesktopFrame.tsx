@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import styles from './DesktopFrame.module.css';
 
-// 앱의 아이폰 논리 해상도 — CSS(.viewport 390×844)와 반드시 일치해야 한다.
-const LOGICAL_H = 844;
+// 앱의 아이폰 논리 해상도 — CSS(.viewport 430×932)와 반드시 일치해야 한다.
+const LOGICAL_H = 932;
 
 // 데스크톱: 왼쪽 랜딩 카피 + 오른쪽 폰 프레임 안의 실제 앱.
 // 앱은 항상 390×844 로 레이아웃되고 프레임 크기에 맞춰 스케일된다(비율·글자 크기 균일).

@@ -24,18 +24,18 @@
 }
 .title {
   font-family: var(--font-display);
-  font-size: var(--text-display-lg);
+  font-size: var(--text-display);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--text-strong);
   margin-top: var(--space-5);
 }
 .lead {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
   color: var(--text-muted);
-  font-size: var(--text-h3);
-  line-height: 1.55;
+  font-size: var(--text-body);
+  line-height: 1.6;
 }
 .illust {
   width: 100%;

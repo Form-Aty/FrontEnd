@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(32px, 6vw, 96px);
+    gap: clamp(48px, 8vw, 160px);
     min-height: 100dvh;
     padding: 32px;
     background: radial-gradient(
@@ -38,25 +38,25 @@
   .device {
     display: block;
     position: relative;
-    /* 아이폰 비율 고정: 390:844. 높이 기준으로 잡고 뷰포트 너비에도 맞춘다. */
-    aspect-ratio: 390 / 844;
-    height: min(920px, calc(100dvh - 64px), calc((100vw - 64px) * (844 / 390)));
+    /* 아이폰 비율 고정: 430:932 (Pro Max). 높이 기준으로 잡고 뷰포트 너비에도 맞춘다. */
+    aspect-ratio: 430 / 932;
+    height: min(1040px, calc(100dvh - 64px), calc((100vw - 64px) * (932 / 430)));
     background: var(--bg-base);
     border: 1px solid var(--border-default);
     border-radius: 36px;
     box-shadow: 0 40px 90px -30px rgba(20, 24, 33, 0.4), 0 12px 32px rgba(20, 24, 33, 0.12);
     overflow: hidden;
     /* 프레임 안에서 100dvh 대신 아이폰 논리 높이를 쓰도록 */
-    --app-h: 844px;
+    --app-h: 932px;
   }
-  /* 앱은 항상 아이폰 논리 해상도(390×844)로 레이아웃하고 프레임에 맞춰 스케일 —
+  /* 앱은 항상 아이폰 논리 해상도(430×932)로 레이아웃하고 프레임에 맞춰 스케일 —
    * 어떤 해상도에서도 글자/여백 비율이 실기기와 동일하다.
    * --frame-scale 은 DesktopFrame.tsx 의 ResizeObserver 가 넣어준다.
    * transform → position:fixed 자손(하단탭/시트/토스트)의 컨테이닝 블록이 되어 프레임에 갇힌다 */
   .viewport {
     display: block;
-    width: 390px;
-    height: 844px;
+    width: 430px;
+    height: 932px;
     transform: scale(var(--frame-scale, 1));
     transform-origin: top left;
     overflow-y: auto;
@@ -70,15 +70,15 @@
   .pitch {
     display: flex;
     flex-direction: column;
-    width: min(460px, 40vw);
+    width: min(500px, 36vw);
     flex: 0 0 auto;
   }
   /* 카피 영역이 생기는 만큼 너비 제약도 함께 계산 */
   .device {
     height: min(
-      920px,
+      1040px,
       calc(100dvh - 64px),
-      calc((100vw - min(460px, 40vw) - clamp(32px, 6vw, 96px) - 64px) * (844 / 390))
+      calc((100vw - min(500px, 36vw) - clamp(48px, 8vw, 160px) - 64px) * (932 / 430))
     );
   }
 
