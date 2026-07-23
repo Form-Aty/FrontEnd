@@ -1,5 +1,7 @@
 .page {
-  min-height: var(--app-h, 100dvh);
+  /* CTA 고정형 전체화면 — iOS 사파리 dvh 버그(툴바 표시 중에도 큰 뷰포트로 계산)를
+   * 피해 svh(툴바 표시 상태 기준) 사용. 프레임 안에서는 --app-h 가 우선. */
+  min-height: var(--app-h, 100svh);
   max-width: 520px;
   margin: 0 auto;
   display: flex;
@@ -42,7 +44,7 @@
 .illust {
   width: 100%;
   max-width: 400px;
-  max-height: min(400px, calc(var(--app-h, 100dvh) * 0.3));
+  max-height: min(400px, calc(var(--app-h, 100svh) * 0.3));
   object-fit: contain;
   margin: var(--space-5) auto 0;
 }

@@ -1,5 +1,6 @@
 .page {
-  min-height: var(--app-h, 100dvh);
+  /* CTA 고정형 전체화면 — iOS 사파리 dvh 버그 회피, svh 기준 (Landing 과 동일) */
+  min-height: var(--app-h, 100svh);
   background: var(--bg-base);
   display: flex;
   flex-direction: column;

@@ -1,6 +1,7 @@
 /* 학교 인증 / 환영 공용 풀스크린 레이아웃 */
 .page {
-  min-height: var(--app-h, 100dvh);
+  /* CTA 고정형 전체화면 — iOS 사파리 dvh 버그 회피, svh 기준 (Landing 과 동일) */
+  min-height: var(--app-h, 100svh);
   max-width: 520px;
   margin: 0 auto;
   display: flex;
