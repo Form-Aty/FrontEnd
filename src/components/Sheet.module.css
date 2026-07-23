@@ -10,7 +10,8 @@
 }
 .sheet {
   width: min(520px, 100%);
-  max-height: 90dvh;
+  /* 프레임(--app-h) 안에서는 프레임 높이 기준으로 제한 */
+  max-height: calc(var(--app-h, 100dvh) * 0.9);
   overflow-y: auto;
   background: var(--bg-base);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;

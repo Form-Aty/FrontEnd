@@ -22,8 +22,13 @@
     gap: clamp(32px, 6vw, 96px);
     min-height: 100dvh;
     padding: 32px;
-    /* 조용한 크롬 — 그라디언트 워시 없이 플랫 뉴트럴 */
-    background: var(--bg-sunken);
+    background: radial-gradient(
+        900px 600px at 18% 22%,
+        var(--teal-50),
+        transparent 60%
+      ),
+      radial-gradient(800px 700px at 85% 80%, #eef1f6, transparent 60%),
+      var(--bg-subtle);
   }
 
   .deviceWrap {
@@ -35,20 +40,25 @@
     position: relative;
     /* 아이폰 비율 고정: 390:844. 높이 기준으로 잡고 뷰포트 너비에도 맞춘다. */
     aspect-ratio: 390 / 844;
-    height: min(880px, calc(100dvh - 64px), calc((100vw - 64px) * (844 / 390)));
+    height: min(920px, calc(100dvh - 64px), calc((100vw - 64px) * (844 / 390)));
     background: var(--bg-base);
     border: 1px solid var(--border-default);
     border-radius: 36px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 40px 90px -30px rgba(20, 24, 33, 0.4), 0 12px 32px rgba(20, 24, 33, 0.12);
     overflow: hidden;
-    /* transform → position:fixed 자손의 컨테이닝 블록이 되어 하단탭/시트가 프레임에 갇힌다 */
-    transform: translateZ(0);
-    /* 프레임 안에서 100dvh 대신 프레임 높이를 쓰도록 */
-    --app-h: 100%;
+    /* 프레임 안에서 100dvh 대신 아이폰 논리 높이를 쓰도록 */
+    --app-h: 844px;
   }
+  /* 앱은 항상 아이폰 논리 해상도(390×844)로 레이아웃하고 프레임에 맞춰 스케일 —
+   * 어떤 해상도에서도 글자/여백 비율이 실기기와 동일하다.
+   * --frame-scale 은 DesktopFrame.tsx 의 ResizeObserver 가 넣어준다.
+   * transform → position:fixed 자손(하단탭/시트/토스트)의 컨테이닝 블록이 되어 프레임에 갇힌다 */
   .viewport {
     display: block;
-    height: 100%;
+    width: 390px;
+    height: 844px;
+    transform: scale(var(--frame-scale, 1));
+    transform-origin: top left;
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
@@ -66,7 +76,7 @@
   /* 카피 영역이 생기는 만큼 너비 제약도 함께 계산 */
   .device {
     height: min(
-      880px,
+      920px,
       calc(100dvh - 64px),
       calc((100vw - min(460px, 40vw) - clamp(32px, 6vw, 96px) - 64px) * (844 / 390))
     );
@@ -117,6 +127,7 @@
     border-radius: var(--radius-full);
     background: var(--bg-base);
     border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
     display: grid;
     place-items: center;
     color: var(--action-primary);

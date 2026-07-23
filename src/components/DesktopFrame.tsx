@@ -1,9 +1,30 @@
-import type { ReactNode } from 'react';
+import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import styles from './DesktopFrame.module.css';
 
+// 앱의 아이폰 논리 해상도 — CSS(.viewport 390×844)와 반드시 일치해야 한다.
+const LOGICAL_H = 844;
+
 // 데스크톱: 왼쪽 랜딩 카피 + 오른쪽 폰 프레임 안의 실제 앱.
+// 앱은 항상 390×844 로 레이아웃되고 프레임 크기에 맞춰 스케일된다(비율·글자 크기 균일).
 // 모바일: 프레임 없이 앱이 화면을 꽉 채움(요소들은 display:contents 로 통과).
 export function DesktopFrame({ children }: { children: ReactNode }) {
+  const deviceRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = deviceRef.current;
+    if (!el) return;
+    const apply = () => {
+      // display:contents(모바일)면 크기가 0 — 스케일 미적용
+      if (el.clientHeight > 0) {
+        el.style.setProperty('--frame-scale', String(el.clientHeight / LOGICAL_H));
+      }
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div className={styles.root}>
       <aside className={styles.pitch} aria-hidden>
@@ -39,7 +60,7 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
       </aside>
 
       <div className={styles.deviceWrap}>
-        <div className={styles.device}>
+        <div className={styles.device} ref={deviceRef}>
           <div id="app-scroll" className={styles.viewport}>
             {children}
           </div>
