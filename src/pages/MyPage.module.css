@@ -24,8 +24,8 @@
   width: 72px;
   height: 72px;
   border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-sunken);
+  color: var(--text-muted);
   display: grid;
   place-items: center;
   font-family: var(--font-display);
@@ -38,14 +38,12 @@
   font-weight: 700;
   color: var(--text-strong);
 }
+/* 배지가 아닌 조용한 본문 텍스트 (§12.4 신뢰는 차분함에서) */
 .badge {
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
   font-size: var(--text-caption);
-  font-weight: 700;
-  color: var(--teal-700);
-  background: var(--surface-teal);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .stats {

@@ -17,14 +17,11 @@
   background: var(--bg-sunken);
 }
 
+/* 칩 대신 플레인 메타 텍스트 (karrot 리스트 문법) */
 .estChip {
   display: inline-block;
-  font-size: var(--text-caption);
-  font-weight: 600;
-  color: var(--teal-700);
-  background: var(--surface-teal);
-  padding: 5px 11px;
-  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
 .title {
   font-size: var(--text-h1);
@@ -45,8 +42,8 @@
   width: 26px;
   height: 26px;
   border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-sunken);
+  color: var(--text-muted);
   display: grid;
   place-items: center;
   font-size: 12px;
@@ -58,14 +55,15 @@
   line-height: 1.6;
 }
 
+/* 그린은 CTA 하나만 (§12.1) — 크레딧 안내는 뉴트럴 면 */
 .rewardBox {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   margin-top: var(--space-5);
   padding: var(--space-3) var(--space-4);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-subtle);
+  color: var(--text-default);
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   font-weight: 500;

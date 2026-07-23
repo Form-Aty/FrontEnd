@@ -1,10 +1,11 @@
+/* karrot 뱃지 지오메트리 — 필 대신 작은 라운드 사각 */
 .chip {
   display: inline-flex;
   align-items: center;
   font-size: var(--text-caption);
   font-weight: 500;
-  padding: 3px 9px;
-  border-radius: var(--radius-full);
+  padding: 3px 8px;
+  border-radius: 6px;
   background: var(--bg-sunken);
   color: var(--text-muted);
 }
@@ -29,11 +30,12 @@
   font-size: var(--text-sm);
 }
 
+/* 상태 뱃지 — karrot '예약중/거래완료'식 작은 라운드 사각 */
 .statusBadge {
   font-size: var(--text-caption);
   font-weight: 600;
-  padding: 3px 9px;
-  border-radius: var(--radius-full);
+  padding: 3px 8px;
+  border-radius: 6px;
 }
 .sActive {
   color: var(--teal-700);

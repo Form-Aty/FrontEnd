@@ -12,10 +12,11 @@
   background: var(--bg-sunken);
 }
 
+/* SEED Tabs (hug) — 필 칩 대신 언더라인 인디케이터 */
 .tabs {
   display: flex;
-  gap: var(--space-2);
-  margin-bottom: var(--space-4);
+  gap: var(--space-5);
+  border-bottom: 1px solid var(--border-default);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -24,23 +25,23 @@
 }
 .tab {
   flex: 0 0 auto;
-  border: 1px solid var(--border-default);
-  background: var(--bg-base);
+  border: none;
+  background: none;
   color: var(--text-muted);
   font-size: var(--text-sm);
   font-weight: 600;
-  padding: 7px var(--space-4);
-  border-radius: var(--radius-full);
-  transition: all var(--t-base);
+  padding: var(--space-2) 2px var(--space-3);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--t-base), border-color var(--t-base);
 }
 .tabOn {
-  background: var(--action-primary);
-  color: var(--action-primary-text);
-  border-color: var(--action-primary);
+  color: var(--text-strong);
+  border-bottom-color: var(--text-strong);
 }
 
+/* 리스트 행이 자체 헤어라인을 가지므로 간격 없음 */
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
 }

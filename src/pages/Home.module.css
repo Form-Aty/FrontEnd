@@ -59,8 +59,8 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-sunken);
+  color: var(--text-default);
   display: grid;
   place-items: center;
 }
@@ -89,8 +89,8 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-sunken);
+  color: var(--text-default);
   display: grid;
   place-items: center;
 }
@@ -128,8 +128,8 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
+  background: var(--bg-sunken);
+  color: var(--text-default);
   display: grid;
   place-items: center;
 }

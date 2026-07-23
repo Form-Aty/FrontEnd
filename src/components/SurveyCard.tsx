@@ -3,7 +3,8 @@ import type { Survey } from '@/types/domain';
 import { estLabel, relativeTime } from '@/lib/format';
 import styles from './SurveyCard.module.css';
 
-// design_system.md §4.3 설문 카드 (피드 핵심) — mockup 레이아웃.
+// 피드 리스트 행 — karrot 리스트 문법: 제목 / 플레인 메타 / 볼드 크레딧.
+// 칩·아바타 등 장식 없이 텍스트 위계로만 구분한다 (§12.2, §12.8).
 export function SurveyCard({ survey }: { survey: Survey }) {
   const owner = survey.owner;
   const remain = Math.max(0, survey.targetCount - survey.collectedCount);
@@ -12,30 +13,19 @@ export function SurveyCard({ survey }: { survey: Survey }) {
   return (
     <Link to={`/surveys/${survey.id}`} className={styles.card}>
       <h3 className={styles.title}>{survey.title}</h3>
-
-      <div className={styles.author}>
-        <span className={styles.avatar} aria-hidden>
-          {owner?.nickname?.[0] ?? '익'}
-        </span>
-        <span className="sm muted">
-          {owner?.university ? `${owner.university} · ` : ''}
-          {owner?.nickname ?? '익명'}
-        </span>
-      </div>
-
-      <div className={styles.chips}>
-        <span className={styles.chip}>{estLabel(survey.estMinutes)}</span>
-        <span className={styles.chip}>
-          <b className="num">{survey.targetCount}</b>명 목표
-        </span>
-      </div>
-
-      <div className={styles.bottom}>
-        <span className={`caption ${nearEnd ? styles.urgent : 'muted'}`}>
-          {nearEnd ? '마감 임박' : relativeTime(survey.createdAt)}
-        </span>
-        <span className={styles.reward}>크레딧 +{survey.costPerResponse}</span>
-      </div>
+      <p className={styles.meta}>
+        {owner?.university ? `${owner.university} · ` : ''}
+        {owner?.nickname ?? '익명'} ·{' '}
+        {nearEnd ? (
+          <span className={styles.urgent}>마감 임박</span>
+        ) : (
+          relativeTime(survey.createdAt)
+        )}
+      </p>
+      <p className={styles.meta}>
+        {estLabel(survey.estMinutes)} · 목표 <span className="num">{survey.targetCount}</span>명
+      </p>
+      <p className={styles.credit}>크레딧 +{survey.costPerResponse}</p>
     </Link>
   );
 }

@@ -13,14 +13,13 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   animation: shimmer 1.2s var(--ease-standard) infinite;
 }
+/* 피드 리스트 행과 동일한 지오메트리 (§14 스켈레톤은 최종 레이아웃 치수) */
 .card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  background: var(--bg-base);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4) var(--space-5);
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-default);
 }
 .row {
   display: flex;
@@ -29,7 +28,6 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
 }
 .error {
   display: flex;
