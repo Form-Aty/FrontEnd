@@ -8,6 +8,7 @@
 .deviceWrap,
 .device,
 .screen,
+.scaled,
 .viewport {
   display: contents;
 }
@@ -107,13 +108,19 @@
   /* 앱은 항상 아이폰 논리 해상도(430×932)로 레이아웃하고 스크린에 맞춰 스케일 —
    * 어떤 해상도에서도 글자/여백 비율이 실기기와 동일하다.
    * --frame-scale 은 DesktopFrame.tsx 의 ResizeObserver 가 넣어준다.
-   * transform → position:fixed 자손(하단탭/시트/토스트)의 컨테이닝 블록이 되어 프레임에 갇힌다 */
-  .viewport {
+   * 주의: transform 은 스크롤 없는 .scaled 에만 건다. 스크롤 컨테이너에 걸면
+   * fixed 자손(하단탭)이 스크롤 콘텐츠와 함께 흘러가 버린다. */
+  .scaled {
     display: block;
     width: 430px;
     height: 932px;
     transform: scale(var(--frame-scale, 1));
     transform-origin: top left;
+  }
+  .viewport {
+    display: block;
+    width: 100%;
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;

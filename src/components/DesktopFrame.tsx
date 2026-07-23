@@ -67,8 +67,12 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
           <span className={styles.btnVolDown} aria-hidden />
           <span className={styles.btnPower} aria-hidden />
           <div className={styles.screen} ref={screenRef}>
-            <div id="app-scroll" className={styles.viewport}>
-              {children}
+            {/* scaled: 스케일만 담당(스크롤 없음) — fixed 자손(하단탭/시트/토스트)의
+             * 컨테이닝 블록이 되어 화면에 고정된다. 스크롤은 안쪽 viewport 가 담당. */}
+            <div className={styles.scaled}>
+              <div id="app-scroll" className={styles.viewport}>
+                {children}
+              </div>
             </div>
           </div>
         </div>
