@@ -15,6 +15,8 @@ interface RequestOptions {
   // 인증 헤더를 붙이지 않는다(로그인/회원가입/리프레시 등).
   auth?: boolean;
   signal?: AbortSignal;
+  headers?: Record<string, string>;
+  timeoutMs?: number;
 }
 
 interface Envelope<T> {
@@ -57,13 +59,21 @@ function refreshOnce(): Promise<boolean> {
 }
 
 async function send<T>(path: string, options: RequestOptions, retried: boolean): Promise<T> {
-  const { method = 'GET', body, auth = true, signal } = options;
+  const {
+    method = 'GET',
+    body,
+    auth = true,
+    signal,
+    headers: customHeaders = {},
+    timeoutMs = TIMEOUT_MS,
+  } = options;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
-  if (signal) signal.addEventListener('abort', () => controller.abort());
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  const abortFromParent = () => controller.abort();
+  if (signal) signal.addEventListener('abort', abortFromParent, { once: true });
 
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...customHeaders };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   const accessToken = tokenStore.getAccess();
   if (auth && accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
@@ -78,12 +88,14 @@ async function send<T>(path: string, options: RequestOptions, retried: boolean):
     });
   } catch (e) {
     clearTimeout(timeout);
+    if (signal) signal.removeEventListener('abort', abortFromParent);
     if (controller.signal.aborted) {
       throw new ApiError('TIMEOUT', '요청이 시간 초과됐어요. 잠시 후 다시 시도해 주세요.');
     }
     throw new ApiError('NETWORK', '네트워크 연결을 확인해 주세요.');
   }
   clearTimeout(timeout);
+  if (signal) signal.removeEventListener('abort', abortFromParent);
 
   // 401/403 → refresh 후 1회 재시도.
   // 403은 SW가 auth 헤더를 유실했을 때도 발생하므로 refresh로 복구 시도.

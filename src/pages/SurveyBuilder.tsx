@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   IconBack,
   IconClose,
@@ -32,7 +32,7 @@ import {
 } from '@/api/queries';
 import { useToast } from '@/store/ui';
 import { confirmDialog } from '@/store/confirm';
-import type { SurveyQuestion, SurveySection, Team } from '@/types/domain';
+import type { GeneratedSurvey, SurveyQuestion, SurveySection, Team } from '@/types/domain';
 import styles from './SurveyBuilder.module.css';
 
 const serialize = (
@@ -110,11 +110,59 @@ function hydrateDraft(
   return { sections, questions: [newDraft('single', fallbackSectionUid)] };
 }
 
+function hydrateAiDraft(survey: GeneratedSurvey): {
+  title: string;
+  description: string;
+  sections: DraftSection[];
+  questions: DraftQuestion[];
+  category: string;
+  estimatedMinutes: number;
+  validationNotice: string;
+} {
+  const sections =
+    survey.sections.length > 0
+      ? survey.sections.map((section, index) =>
+          newSection(section.title.trim() || `섹션 ${index + 1}`),
+        )
+      : [newSection()];
+  survey.sections.forEach((section, index) => {
+    if (sections[index]) sections[index].description = section.description?.trim() ?? '';
+  });
+
+  const questions = survey.questions.map((question) => {
+    const section = sections[question.sectionIndex] ?? sections[0];
+    return {
+      uid: newDraft().uid,
+      sectionUid: section.uid,
+      type: question.type,
+      title: question.text,
+      description: question.description?.trim() || null,
+      required: question.required,
+      options: [...(question.options ?? [])],
+      branchRules: {},
+      scaleMax: question.scaleMax || 5,
+      scaleMinLabel: question.scaleMinLabel?.trim() || null,
+      scaleMaxLabel: question.scaleMaxLabel?.trim() || null,
+    };
+  });
+
+  return {
+    title: survey.title,
+    description: survey.description,
+    sections,
+    questions: questions.length > 0 ? questions : [newDraft('single', sections[0].uid)],
+    category: survey.category,
+    estimatedMinutes: survey.estimatedMinutes,
+    validationNotice: survey.validationNotice,
+  };
+}
+
 // 자체 설문 빌더 — 구글폼 레퍼런스 UX.
 export function SurveyBuilder() {
   const { id } = useParams();
   const editId = Number(id ?? 0);
   const editMode = editId > 0;
+  const location = useLocation();
   const navigate = useNavigate();
   const invalidate = useInvalidateAll();
   const push = useToast((s) => s.push);
@@ -137,14 +185,29 @@ export function SurveyBuilder() {
     isError: questionsError,
     refetch: refetchQuestions,
   } = useSurveyQuestions(editId);
-  const initialSection = useRef(newSection());
+  const [aiImport] = useState(() => {
+    const candidate = (location.state as { aiDraft?: GeneratedSurvey } | null)?.aiDraft;
+    if (
+      editMode ||
+      !candidate ||
+      !Array.isArray(candidate.sections) ||
+      !Array.isArray(candidate.questions)
+    ) {
+      return null;
+    }
+    return hydrateAiDraft(candidate);
+  });
+  const initialSection = useRef(aiImport?.sections[0] ?? newSection());
+  const initialQuestions = useRef(
+    aiImport?.questions ?? [newDraft('single', initialSection.current.uid)],
+  );
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [sections, setSections] = useState<DraftSection[]>([initialSection.current]);
-  const [questions, setQuestions] = useState<DraftQuestion[]>([
-    newDraft('single', initialSection.current.uid),
-  ]);
+  const [title, setTitle] = useState(aiImport?.title ?? '');
+  const [description, setDescription] = useState(aiImport?.description ?? '');
+  const [sections, setSections] = useState<DraftSection[]>(
+    aiImport?.sections ?? [initialSection.current],
+  );
+  const [questions, setQuestions] = useState<DraftQuestion[]>(initialQuestions.current);
   const [activeUid, setActiveUid] = useState<string>(questions[0]?.uid ?? '');
   const [preview, setPreview] = useState(false);
   const [errorUids, setErrorUids] = useState<Set<string>>(new Set());
@@ -153,7 +216,11 @@ export function SurveyBuilder() {
   const loadedEditId = useRef<number | null>(null);
 
   // 작성 중 이탈 방지 — 초기 스냅샷과 비교해 변경 여부 판단
-  const initialSnap = useRef(serialize('', '', [initialSection.current], [questions[0]]));
+  const initialSnap = useRef(
+    aiImport
+      ? '__unsaved_ai_import__'
+      : serialize('', '', [initialSection.current], [initialQuestions.current[0]]),
+  );
   const publishedRef = useRef(false);
   const dirty =
     !publishedRef.current && serialize(title, description, sections, questions) !== initialSnap.current;
@@ -443,6 +510,13 @@ export function SurveyBuilder() {
       </header>
 
       <div className={styles.body}>
+        {aiImport && !preview && (
+          <div className={styles.aiImportNotice}>
+            <strong>AI 초안을 편집기로 가져왔어요.</strong>
+            <p>{aiImport.validationNotice}</p>
+          </div>
+        )}
+
         {/* 폼 헤더 */}
         <div className={`${styles.formHead} ${styles.cardBase}`}>
           {preview ? (
@@ -565,7 +639,13 @@ export function SurveyBuilder() {
                   targetCount: existingSurvey.targetCount,
                   estMinutes: existingSurvey.estMinutes,
                 }
-              : undefined
+              : aiImport
+                ? {
+                    category: aiImport.category,
+                    targetCount: 50,
+                    estMinutes: aiImport.estimatedMinutes,
+                  }
+                : undefined
           }
           onClose={() => setPublishOpen(false)}
           onPublish={async (meta) => {
