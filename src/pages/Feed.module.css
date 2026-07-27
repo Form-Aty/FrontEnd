@@ -1,3 +1,70 @@
+/* ── 피드 홈 히어로 — 잉크 네이비 + 브랜드 그린 글로우 ──
+ * .main 패딩을 네거티브 마진으로 뚫고 풀블리드. 아래 .sheet 가 겹쳐 올라온다. */
+.hero {
+  --px: calc(var(--space-4) + var(--edge-gain, 0px));
+  position: relative;
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--px)) 0;
+  padding: calc(var(--space-4) + env(safe-area-inset-top)) var(--px) calc(var(--space-6) + 28px);
+  background:
+    radial-gradient(340px 240px at 90% -12%, rgba(52, 168, 102, 0.4), transparent 62%),
+    radial-gradient(300px 220px at -8% 112%, rgba(52, 168, 102, 0.22), transparent 58%),
+    linear-gradient(158deg, #1c2532, #131822 52%, #0f151f);
+  color: #fff;
+  overflow: hidden;
+}
+
+/* 떠다니는 글로우 오브 — 은은한 생동감 */
+.orbA,
+.orbB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  pointer-events: none;
+}
+.orbA {
+  width: 140px;
+  height: 140px;
+  right: -36px;
+  top: 8px;
+  background: radial-gradient(circle at 35% 35%, rgba(127, 211, 163, 0.35), rgba(52, 168, 102, 0.08) 70%);
+  animation: float 7s ease-in-out infinite alternate;
+}
+.orbB {
+  width: 90px;
+  height: 90px;
+  left: -22px;
+  bottom: 46px;
+  background: radial-gradient(circle at 40% 40%, rgba(184, 232, 204, 0.22), rgba(52, 168, 102, 0.05) 70%);
+  animation: float 9s ease-in-out infinite alternate-reverse;
+}
+@keyframes float {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(10px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbA,
+  .orbB {
+    animation: none;
+  }
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.heroBrand {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  /* 다크 위 로고 가독 — 화이트로 반전 */
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
 .bell {
   width: 44px;
   height: 44px;
@@ -5,18 +72,154 @@
   place-items: center;
   border: none;
   background: transparent;
-  color: var(--text-default);
+  color: rgba(255, 255, 255, 0.85);
   border-radius: var(--radius-md);
 }
 .bell:hover {
-  background: var(--bg-sunken);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* SEED Tabs (hug) — 필 칩 대신 언더라인 인디케이터 */
+.greet {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.66);
+}
+.greet b {
+  color: #fff;
+  font-weight: 600;
+}
+
+.creditRow {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-top: var(--space-2);
+  color: inherit;
+}
+.creditLabel {
+  display: block;
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--teal-300);
+}
+.creditValue {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.creditUnit {
+  font-size: var(--text-h2);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+.creditValue svg {
+  align-self: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.heroSub {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.6);
+}
+.heroSub b {
+  color: var(--green-soft);
+  font-weight: 700;
+}
+
+.heroActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+.actNew,
+.actAi {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-body);
+  font-weight: 600;
+  transition: transform var(--t-base), background var(--t-base);
+}
+.actNew:active,
+.actAi:active {
+  transform: scale(0.97);
+}
+.actNew {
+  border: none;
+  background: linear-gradient(180deg, #3db572, var(--teal-500));
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(52, 168, 102, 0.35);
+}
+.actNew:hover {
+  background: var(--teal-600);
+}
+.actAi {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+.actAi:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+/* ── 시트 — 히어로 위로 겹쳐 올라오는 라운드 컨테이너 ── */
+.sheet {
+  --px: calc(var(--space-4) + var(--edge-gain, 0px));
+  position: relative;
+  margin: -24px calc(-1 * var(--px)) 0;
+  padding: var(--space-5) var(--px) 0;
+  background: var(--bg-base);
+  border-radius: 24px 24px 0 0;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.sheetTitle {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-strong);
+}
+.sheetCount {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--surface-teal);
+  color: var(--teal-700);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 세그먼트 필 탭 — 언더라인보다 또렷한 위계 */
 .tabs {
   display: flex;
-  gap: var(--space-5);
-  border-bottom: 1px solid var(--border-default);
+  gap: var(--space-2);
+  margin-top: var(--space-4);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -26,22 +229,22 @@
 .tab {
   flex: 0 0 auto;
   border: none;
-  background: none;
+  background: var(--bg-sunken);
   color: var(--text-muted);
   font-size: var(--text-sm);
   font-weight: 600;
-  padding: var(--space-2) 2px var(--space-3);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color var(--t-base), border-color var(--t-base);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  transition: background var(--t-base), color var(--t-base);
 }
 .tabOn {
-  color: var(--text-strong);
-  border-bottom-color: var(--text-strong);
+  background: var(--gray-900);
+  color: var(--gray-0);
 }
 
 /* 리스트 행이 자체 헤어라인을 가지므로 간격 없음 */
 .list {
   display: flex;
   flex-direction: column;
+  margin-top: var(--space-2);
 }

@@ -11,14 +11,16 @@ interface Props {
   brand?: boolean; // 좌상단 로고
   action?: ReactNode; // 헤더 우측 (벨/설정 등)
   hideNav?: boolean;
+  noHeader?: boolean; // 페이지가 자체 히어로/헤더를 그릴 때 (예: 피드 홈)
 }
 
-export function AppShell({ title, children, back, brand, action, hideNav }: Props) {
+export function AppShell({ title, children, back, brand, action, hideNav, noHeader }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
     <div className={styles.shell}>
+      {!noHeader && (
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.left}>
@@ -36,6 +38,7 @@ export function AppShell({ title, children, back, brand, action, hideNav }: Prop
           <div className={styles.right}>{action}</div>
         </div>
       </header>
+      )}
 
       <main
         id="main"
