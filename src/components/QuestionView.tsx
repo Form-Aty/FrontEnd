@@ -30,6 +30,7 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
   return (
     <div className={`${styles.card} ${error ? styles.error : ''}`}>
       <p className={styles.title}>
+        <span className={styles.qNum}>{index + 1}</span>
         {q.title || '(질문 없음)'}
         {q.required && <span className={styles.req}>*</span>}
       </p>
@@ -66,7 +67,8 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
                 checked={value === opt}
                 onChange={() => onChange(opt)}
               />
-              <span>{opt}</span>
+              <span className={`${styles.ind} ${styles.indRadio}`} aria-hidden />
+              <span className={styles.choiceText}>{opt}</span>
             </label>
           ))}
 
@@ -84,7 +86,8 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
                     onChange(checked ? arr.filter((v) => v !== opt) : [...arr, opt])
                   }
                 />
-                <span>{opt}</span>
+                <span className={`${styles.ind} ${styles.indCheck}`} aria-hidden />
+                <span className={styles.choiceText}>{opt}</span>
               </label>
             );
           })}
@@ -109,13 +112,11 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
 
         {q.type === 'scale' && (
           <div className={styles.scale}>
-            {q.scaleMinLabel && <span className={styles.scaleLabel}>{q.scaleMinLabel}</span>}
             <div className={styles.scaleRow}>
               {Array.from({ length: q.scaleMax }, (_, i) => {
                 const n = String(i + 1);
                 return (
                   <label key={n} className={styles.scaleItem}>
-                    <span className={styles.scaleNum}>{i + 1}</span>
                     <input
                       type="radio"
                       name={name}
@@ -123,11 +124,17 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
                       checked={value === n}
                       onChange={() => onChange(n)}
                     />
+                    <span className={styles.scaleBtn}>{i + 1}</span>
                   </label>
                 );
               })}
             </div>
-            {q.scaleMaxLabel && <span className={styles.scaleLabel}>{q.scaleMaxLabel}</span>}
+            {(q.scaleMinLabel || q.scaleMaxLabel) && (
+              <div className={styles.scaleLabels}>
+                <span>{q.scaleMinLabel}</span>
+                <span>{q.scaleMaxLabel}</span>
+              </div>
+            )}
           </div>
         )}
 
@@ -141,6 +148,8 @@ export function QuestionView({ question: q, index, value, onChange, disabled, er
           />
         )}
       </div>
+
+      {error && <p className={styles.errNote}>필수 질문이에요 — 답변해 주세요</p>}
     </div>
   );
 }

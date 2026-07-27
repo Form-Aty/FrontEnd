@@ -1,18 +1,46 @@
 .card {
   background: var(--bg-base);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: none;
-  padding: var(--space-4);
+  padding: var(--space-5) var(--space-4);
 }
 .card.error {
   border-color: var(--status-danger);
+  animation: shake 280ms var(--ease-standard);
+}
+@keyframes shake {
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card.error {
+    animation: none;
+  }
 }
 .title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
   font-size: var(--text-body);
   font-weight: 600;
   color: var(--text-strong);
   line-height: 1.5;
+}
+.qNum {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--action-primary);
+  font-variant-numeric: tabular-nums;
 }
 .req {
   color: var(--status-danger);
@@ -25,10 +53,16 @@
   line-height: 1.5;
 }
 .body {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
+}
+.errNote {
+  margin-top: var(--space-3);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--status-danger);
 }
 .input {
   width: 100%;
@@ -67,58 +101,149 @@
   min-height: 48px;
 }
 
+/* ── 선택지: 네이티브 라디오 대신 탭 카드 ── */
 .choice {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  min-height: 40px;
-  border-radius: var(--radius-sm);
-  padding: 0 var(--space-2);
+  min-height: 52px;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
   cursor: pointer;
   font-size: var(--text-body);
   color: var(--text-default);
+  transition: border-color var(--t-base), background var(--t-base);
 }
 .choice:hover {
+  border-color: var(--border-strong);
   background: var(--bg-subtle);
 }
+.choice:has(input:checked) {
+  border-color: var(--action-primary);
+  background: var(--surface-teal);
+}
+.choice:has(input:checked) .choiceText {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+.choice:has(input:focus-visible) {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+.choice:active {
+  transform: scale(0.99);
+}
 .choice input {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 auto;
-  accent-color: var(--action-primary);
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.choiceText {
+  min-width: 0;
+  line-height: 1.45;
 }
 
+/* 커스텀 인디케이터 — 라디오(원+도트) / 체크(사각+체크) */
+.ind {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  transition: border-color var(--t-base), background var(--t-base);
+  background: var(--bg-base);
+}
+.indRadio {
+  border-radius: 50%;
+}
+.indCheck {
+  border-radius: 7px;
+}
+.choice:has(input:checked) .ind {
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+}
+.indRadio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  transform: scale(0);
+  transition: transform var(--t-base);
+}
+.choice:has(input:checked) .indRadio::after {
+  transform: scale(1);
+}
+.indCheck::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(-45deg) translate(1px, -1px) scale(0);
+  transition: transform var(--t-base);
+}
+.choice:has(input:checked) .indCheck::after {
+  transform: rotate(-45deg) translate(1px, -1px) scale(1);
+}
+
+/* ── 스케일: 큰 숫자 버튼 ── */
 .scale {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-.scaleLabel {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
+  flex-direction: column;
+  gap: var(--space-2);
 }
 .scaleRow {
   display: flex;
   gap: var(--space-2);
-  flex: 1;
-  justify-content: space-between;
-  min-width: 200px;
 }
 .scaleItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  position: relative;
+  flex: 1;
+  min-width: 0;
   cursor: pointer;
 }
-.scaleNum {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
 .scaleItem input {
-  width: 22px;
-  height: 22px;
-  accent-color: var(--action-primary);
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.scaleBtn {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 48px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-default);
+  transition: border-color var(--t-base), background var(--t-base), color var(--t-base),
+    transform var(--t-base);
+}
+.scaleItem:hover .scaleBtn {
+  border-color: var(--border-strong);
+  background: var(--bg-subtle);
+}
+.scaleItem:has(input:checked) .scaleBtn {
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+  color: #fff;
+  transform: scale(1.08);
+}
+.scaleItem:has(input:focus-visible) .scaleBtn {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+.scaleLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-caption);
+  color: var(--text-muted);
 }

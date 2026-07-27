@@ -137,12 +137,26 @@ export function SurveyFill() {
     setErrorIdx(new Set());
   };
 
+  const answeredCount = questions.filter((q) => !isEmpty(answers[q.id])).length;
+  const progress = questions.length ? Math.round((answeredCount / questions.length) * 100) : 0;
+
   return (
     <AppShell back title="설문 응답" hideNav>
+      {/* 헤더 바로 아래 붙는 진행률 바 — 스크롤해도 유지 */}
+      <div className={styles.progressTrack} aria-hidden>
+        <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+      </div>
+
       <div className={styles.formHead}>
         <h1 className={styles.title}>{survey.title}</h1>
         {survey.description && <p className={styles.desc}>{survey.description}</p>}
-        <p className={styles.reqNote}>* 표시는 필수 질문이에요.</p>
+        <div className={styles.metaRow}>
+          <span className={styles.metaChip}>약 {survey.estMinutes}분</span>
+          <span className={`${styles.metaChip} ${styles.metaChipTeal}`}>
+            +{survey.costPerResponse} 크레딧
+          </span>
+          <span className={styles.reqNote}>* 필수 질문</span>
+        </div>
       </div>
 
       {sections.length > 0 && currentSection ? (
@@ -186,6 +200,9 @@ export function SurveyFill() {
       )}
 
       <div className={styles.submit}>
+        <p className={styles.progressText}>
+          <b className="num">{answeredCount}</b>/{questions.length} 답변함
+        </p>
         {sections.length > 0 ? (
           <div className={styles.navRow}>
             <Button variant="secondary" size="lg" disabled={sectionHistory.length === 0} onClick={goBack}>

@@ -3,11 +3,29 @@
   border-radius: var(--radius-lg);
   background: var(--bg-sunken);
 }
+/* ── 진행률 — 헤더(56px) 아래 스티키 3px 바 ── */
+.progressTrack {
+  --px: calc(var(--space-4) + var(--edge-gain, 0px));
+  position: sticky;
+  top: 56px;
+  z-index: 15;
+  height: 3px;
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--px)) var(--space-5);
+  background: var(--bg-sunken);
+}
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-300), var(--action-primary));
+  border-radius: 0 2px 2px 0;
+  transition: width 300ms var(--ease-standard);
+}
 .formHead {
-  background: var(--bg-base);
+  background:
+    radial-gradient(240px 140px at 100% 0%, var(--surface-teal), transparent 65%),
+    var(--bg-base);
   border: 1px solid var(--border-default);
   border-top: 4px solid var(--action-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: none;
   padding: var(--space-5);
   margin-bottom: var(--space-4);
@@ -25,8 +43,28 @@
   color: var(--text-default);
   line-height: 1.6;
 }
-.reqNote {
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-top: var(--space-4);
+}
+.metaChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-sunken);
+  color: var(--text-default);
+  font-size: var(--text-caption);
+  font-weight: 600;
+}
+.metaChipTeal {
+  background: var(--surface-teal);
+  color: var(--teal-700);
+}
+.reqNote {
+  margin-left: auto;
   font-size: var(--text-caption);
   color: var(--status-danger);
 }
@@ -70,8 +108,28 @@
   font-size: var(--text-sm);
   line-height: 1.5;
 }
+/* ── 스티키 제출 바 — 블러 배경으로 항상 하단 고정 ── */
 .submit {
-  margin-top: var(--space-5);
+  --px: calc(var(--space-4) + var(--edge-gain, 0px));
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin: var(--space-5) calc(-1 * var(--px))
+    calc(-1 * (var(--space-6) + env(safe-area-inset-bottom)));
+  padding: var(--space-3) var(--px) calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--bg-base) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-default);
+}
+.progressText {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  text-align: center;
+}
+.progressText b {
+  color: var(--action-primary);
 }
 .navRow {
   display: grid;
