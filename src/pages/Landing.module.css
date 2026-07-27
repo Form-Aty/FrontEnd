@@ -6,7 +6,11 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: var(--bg-base);
+  /* 화이트 위 은은한 브랜드 워시 — 밋밋함 제거, 콘텐츠 대비는 유지 */
+  background:
+    radial-gradient(420px 320px at 100% -4%, var(--teal-50), transparent 65%),
+    radial-gradient(360px 300px at -12% 38%, var(--gray-50), transparent 60%),
+    var(--bg-base);
   padding: calc(var(--space-5) + env(safe-area-inset-top))
     calc(var(--space-4) + var(--edge-gain, 0px))
     calc(var(--space-6) + env(safe-area-inset-bottom));
@@ -26,6 +30,27 @@
   flex-direction: column;
   justify-content: center;
 }
+.eyebrow {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-4);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--surface-teal);
+  color: var(--teal-700);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--action-primary);
+}
 .title {
   font-family: var(--font-display);
   font-size: var(--text-display);
@@ -33,7 +58,10 @@
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--text-strong);
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
+}
+.accent {
+  color: var(--action-primary);
 }
 .lead {
   margin-top: var(--space-3);
@@ -41,13 +69,26 @@
   font-size: var(--text-body);
   line-height: 1.6;
 }
+/* 일러스트를 민트 라운드 컨테이너에 담아 장면처럼 — 당근식 소프트 배경 */
+.illustWrap {
+  margin-top: var(--space-5);
+  border-radius: 24px;
+  background: linear-gradient(155deg, var(--teal-50) 10%, var(--teal-100) 100%);
+  padding: var(--space-4) var(--space-4) 0;
+  display: grid;
+  place-items: end center;
+  overflow: hidden;
+}
 /* 뷰포트가 낮아도(사파리 툴바 등) CTA 가 잘리지 않게 높이를 화면에 연동 */
 .illust {
   width: 100%;
-  max-width: 400px;
-  max-height: min(400px, calc(var(--app-h, 100svh) * 0.3));
+  max-width: 360px;
+  max-height: min(360px, calc(var(--app-h, 100svh) * 0.28));
   object-fit: contain;
-  margin: var(--space-5) auto 0;
+  object-position: bottom;
+  display: block;
+  /* PNG 에 흰 배경이 깔려 있어 민트 위에 흰 박스로 뜬다 — multiply 로 흰색 제거 */
+  mix-blend-mode: multiply;
 }
 .actions {
   display: flex;

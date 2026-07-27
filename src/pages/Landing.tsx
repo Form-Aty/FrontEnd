@@ -14,17 +14,20 @@ export function Landing() {
       <img className={styles.brand} src="/logo.png" alt="폼앗이" />
 
       <div className={styles.body}>
+        <span className={styles.eyebrow}>무료 설문 교환 플랫폼</span>
         <h1 className={styles.title}>
           설문을 주고받는
           <br />
-          대학생 품앗이
+          대학생 <span className={styles.accent}>품앗이</span>
         </h1>
         <p className={styles.lead}>
           설문은 설문으로,
           <br />
           돈 없이 서로 도와요.
         </p>
-        <img className={styles.illust} src="/landing.png" alt="설문을 주고받는 두 학생" />
+        <div className={styles.illustWrap}>
+          <img className={styles.illust} src="/landing.png" alt="설문을 주고받는 두 학생" />
+        </div>
       </div>
 
       <div className={styles.actions}>

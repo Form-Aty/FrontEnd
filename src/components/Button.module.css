@@ -24,24 +24,30 @@
 }
 
 .primary {
-  background: var(--action-primary);
+  /* 위가 살짝 밝은 수직 그라디언트 + 은은한 브랜드 섀도 — 플랫함 탈피 */
+  background: linear-gradient(180deg, #3db572, var(--action-primary));
   color: var(--action-primary-text);
+  box-shadow: 0 4px 14px rgba(52, 168, 102, 0.24);
 }
 .primary:hover:not(:disabled) {
   background: var(--action-primary-hover);
+  box-shadow: 0 6px 18px rgba(52, 168, 102, 0.3);
 }
 .primary:active:not(:disabled) {
   background: var(--action-primary-pressed);
+  box-shadow: none;
 }
 .primary:disabled {
   background: var(--action-disabled-bg);
   color: var(--action-disabled-text);
+  box-shadow: none;
 }
 
 .secondary {
-  background: transparent;
+  background: var(--bg-base);
   border-color: var(--border-strong);
   color: var(--text-default);
+  box-shadow: var(--shadow-sm);
 }
 .secondary:hover:not(:disabled) {
   border-color: var(--text-muted);

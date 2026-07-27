@@ -225,8 +225,8 @@
     height: 48px;
     flex: 0 0 auto;
     border-radius: var(--radius-full);
-    background: var(--bg-base);
-    border: 1px solid var(--border-default);
+    background: linear-gradient(160deg, var(--bg-base), var(--teal-50));
+    border: 1px solid var(--teal-100);
     box-shadow: var(--shadow-sm);
     display: grid;
     place-items: center;
