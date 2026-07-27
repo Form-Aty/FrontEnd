@@ -137,10 +137,10 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: var(--sb-h);
-    /* 페이지가 --sb-bg/--sb-fg 를 정의하면 그 테마를 따른다 (예: 피드 다크 히어로) */
+    /* 페이지가 --sb-bg/--sb-fg 를 정의하면 그 테마를 따른다 (예: 피드 다크 히어로).
+     * 실기기처럼 라우트 전환과 동시에 즉시 색이 바뀌도록 트랜지션 없음. */
     background: var(--sb-bg, var(--bg-base));
     color: var(--sb-fg, var(--text-strong));
-    transition: background var(--t-base), color var(--t-base);
   }
   .sbTime {
     justify-self: center;
