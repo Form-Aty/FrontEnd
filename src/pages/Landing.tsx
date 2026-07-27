@@ -14,27 +14,35 @@ export function Landing() {
       <img className={styles.brand} src="/logo.png" alt="폼앗이" />
 
       <div className={styles.body}>
-        <span className={styles.eyebrow}>무료 설문 교환 플랫폼</span>
         <h1 className={styles.title}>
           설문을 주고받는
           <br />
-          대학생 <span className={styles.accent}>품앗이</span>
+          대학생 품앗이
         </h1>
         <p className={styles.lead}>
           설문은 설문으로,
           <br />
           돈 없이 서로 도와요.
         </p>
-        <div className={styles.illustWrap}>
-          <img className={styles.illust} src="/landing.png" alt="설문을 주고받는 두 학생" />
-        </div>
+        <img className={styles.illust} src="/landing.png" alt="설문을 주고받는 두 학생" />
       </div>
 
       <div className={styles.actions}>
-        <Button size="lg" full onClick={() => navigate('/verify')}>
+        <Button
+          size="lg"
+          full
+          className={styles.primaryAction}
+          onClick={() => navigate('/verify')}
+        >
           시작하기
         </Button>
-        <Button size="lg" full variant="secondary" onClick={() => navigate('/login')}>
+        <Button
+          size="lg"
+          full
+          variant="secondary"
+          className={styles.secondaryAction}
+          onClick={() => navigate('/login')}
+        >
           로그인
         </Button>
       </div>
