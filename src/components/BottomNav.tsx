@@ -24,7 +24,7 @@ export function BottomNav() {
         onClick={() => navigate('/surveys/new')}
         aria-label="설문 등록"
       >
-        <IconPlus size={26} />
+        <IconPlus size={30} />
       </button>
       {right.map((t) => (
         <Tab key={t.to} {...t} />
@@ -39,7 +39,7 @@ function Tab({ to, label, Icon }: { to: string; label: string; Icon: typeof Icon
       to={to}
       className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}
     >
-      <Icon size={23} />
+      <Icon size={26} />
       <span className={styles.label}>{label}</span>
     </NavLink>
   );

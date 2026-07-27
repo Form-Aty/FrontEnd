@@ -16,9 +16,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  min-height: 58px;
-  padding: var(--space-2) 0;
+  gap: 5px;
+  min-height: 80px;
+  padding: var(--space-3) 4px;
   color: var(--text-muted);
   transition: color var(--t-base);
 }
@@ -29,13 +29,13 @@
   color: var(--action-primary);
 }
 .label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .fab {
   flex: 0 0 auto;
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   margin: 0 var(--space-1);
   transform: translateY(-14px);
   border: none;
