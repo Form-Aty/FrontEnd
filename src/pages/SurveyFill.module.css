@@ -24,7 +24,6 @@
     radial-gradient(240px 140px at 100% 0%, var(--surface-teal), transparent 65%),
     var(--bg-base);
   border: 1px solid var(--border-default);
-  border-top: 4px solid var(--action-primary);
   border-radius: var(--radius-lg);
   box-shadow: none;
   padding: var(--space-5);
@@ -49,19 +48,14 @@
   gap: var(--space-2);
   margin-top: var(--space-4);
 }
-.metaChip {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  background: var(--bg-sunken);
-  color: var(--text-default);
-  font-size: var(--text-caption);
-  font-weight: 600;
+/* 칩 대신 플레인 텍스트 위계 (§12.2) */
+.metaText {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
-.metaChipTeal {
-  background: var(--surface-teal);
-  color: var(--teal-700);
+.metaText b {
+  color: var(--teal-600);
+  font-weight: 700;
 }
 .reqNote {
   margin-left: auto;
@@ -82,7 +76,6 @@
 .sectionHead {
   background: var(--bg-base);
   border: 1px solid var(--border-default);
-  border-left: 4px solid var(--action-primary);
   border-radius: var(--radius-md);
   box-shadow: none;
   padding: var(--space-4);
@@ -93,14 +86,10 @@
   color: var(--text-strong);
 }
 .sectionStep {
-  width: fit-content;
-  margin-bottom: var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  padding: 3px 9px;
+  margin-bottom: var(--space-1);
   color: var(--action-primary);
   font-size: var(--text-caption);
-  font-weight: 800;
+  font-weight: 700;
 }
 .sectionDesc {
   margin-top: var(--space-2);

@@ -75,8 +75,7 @@
   gap: var(--space-3);
 }
 .sectionHead {
-  border-left: 4px solid var(--action-primary);
-  padding-left: var(--space-3);
+  padding-left: 0;
 }
 .sectionHead h2 {
   color: var(--text-strong);

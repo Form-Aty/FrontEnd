@@ -200,18 +200,11 @@
   font-weight: 700;
   color: var(--text-strong);
 }
+/* 뱃지 대신 플레인 숫자 — 타이틀과 같은 높이의 teal 카운트 */
 .sheetCount {
-  min-width: 24px;
-  height: 24px;
-  padding: 0 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  background: var(--surface-teal);
-  color: var(--teal-700);
-  font-size: var(--text-caption);
+  font-size: var(--text-h2);
   font-weight: 700;
+  color: var(--action-primary);
   font-variant-numeric: tabular-nums;
 }
 

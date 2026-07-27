@@ -151,9 +151,8 @@ export function SurveyFill() {
         <h1 className={styles.title}>{survey.title}</h1>
         {survey.description && <p className={styles.desc}>{survey.description}</p>}
         <div className={styles.metaRow}>
-          <span className={styles.metaChip}>약 {survey.estMinutes}분</span>
-          <span className={`${styles.metaChip} ${styles.metaChipTeal}`}>
-            +{survey.costPerResponse} 크레딧
+          <span className={styles.metaText}>
+            약 {survey.estMinutes}분 · 제출하면 <b>+{survey.costPerResponse} 크레딧</b>
           </span>
           <span className={styles.reqNote}>* 필수 질문</span>
         </div>
