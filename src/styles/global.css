@@ -163,6 +163,22 @@ img {
   }
 }
 
+/* 전역 스크롤바 — 얇고 녹색 */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #34a866;
+  border-radius: 999px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #34a866 transparent;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
