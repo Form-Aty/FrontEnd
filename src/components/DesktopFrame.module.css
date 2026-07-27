@@ -127,7 +127,7 @@
     display: block;
     width: 100%;
     height: calc(100% - var(--sb-h));
-    overflow-y: auto;
+    overflow-y: overlay;
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -138,7 +138,7 @@
   }
   .viewport::-webkit-scrollbar-track {
     background: transparent;
-    margin: 40px 0 24px;
+    margin: 300px 0 200px;
   }
   .viewport::-webkit-scrollbar-thumb {
     background: #34a866;
