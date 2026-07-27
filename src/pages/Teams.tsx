@@ -75,7 +75,7 @@ export function Teams() {
   };
 
   return (
-    <AppShell back title="팀 관리">
+    <AppShell title="팀 관리">
       <Card as="section" className={styles.panel}>
         <div className={styles.modeTabs} role="tablist">
           <button

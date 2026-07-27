@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: space-between;
   height: 56px;
-  padding: 0 var(--space-2);
+  padding: 0 calc(var(--space-2) + var(--edge-gain, 0px));
   background: var(--bg-base);
   border-bottom: 1px solid var(--border-default);
 }
@@ -50,7 +50,7 @@
   max-width: 640px;
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-3) var(--space-8);
+  padding: var(--space-4) calc(var(--space-3) + var(--edge-gain, 0px)) var(--space-8);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);

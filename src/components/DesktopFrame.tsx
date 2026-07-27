@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import styles from './DesktopFrame.module.css';
 
 // 앱의 아이폰 논리 해상도 — CSS(.viewport 430×932)와 반드시 일치해야 한다.
@@ -70,6 +70,7 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
             {/* scaled: 스케일만 담당(스크롤 없음) — fixed 자손(하단탭/시트/토스트)의
              * 컨테이닝 블록이 되어 화면에 고정된다. 스크롤은 안쪽 viewport 가 담당. */}
             <div className={styles.scaled}>
+              <StatusBar />
               <div id="app-scroll" className={styles.viewport}>
                 {children}
               </div>
@@ -80,6 +81,60 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+// 아이폰 상태바 — 실제 시간 + 셀룰러/와이파이/배터리, 가운데는 다이나믹 아일랜드
+function StatusBar() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 10_000);
+    return () => clearInterval(id);
+  }, []);
+  const time = `${now.getHours() % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+  return (
+    <div className={styles.statusBar} aria-hidden>
+      <span className={styles.sbTime}>{time}</span>
+      <span className={styles.island} />
+      <span className={styles.sbIcons}>
+        <GlyphCellular />
+        <GlyphWifi />
+        <GlyphBattery />
+      </span>
+    </div>
+  );
+}
+
+const GlyphCellular = () => (
+  <svg width="19" height="13" viewBox="0 0 20 13" fill="currentColor">
+    <rect x="0" y="8" width="3.6" height="5" rx="1.1" />
+    <rect x="5.3" y="5.5" width="3.6" height="7.5" rx="1.1" />
+    <rect x="10.6" y="2.8" width="3.6" height="10.2" rx="1.1" />
+    <rect x="15.9" y="0" width="3.6" height="13" rx="1.1" />
+  </svg>
+);
+const GlyphWifi = () => (
+  <svg
+    width="17"
+    height="13"
+    viewBox="0 0 17 13"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+  >
+    <path d="M1.4 4.5a10.6 10.6 0 0 1 14.2 0" />
+    <path d="M3.9 7.4a6.9 6.9 0 0 1 9.2 0" />
+    <path d="M6.4 10.2a3.3 3.3 0 0 1 4.2 0" />
+    <circle cx="8.5" cy="12" r="0.4" fill="currentColor" />
+  </svg>
+);
+const GlyphBattery = () => (
+  <svg width="28" height="13" viewBox="0 0 28 13" fill="none">
+    <rect x="0.5" y="0.5" width="24" height="12" rx="3.8" stroke="currentColor" opacity="0.35" />
+    <path d="M26 4.4v4.2a2.3 2.3 0 0 0 0-4.2z" fill="currentColor" opacity="0.4" />
+    <rect x="2" y="2" width="17.5" height="9" rx="2.3" fill="currentColor" />
+  </svg>
+);
 
 function Feature({ title, desc, glyph }: { title: string; desc: string; glyph: ReactNode }) {
   return (

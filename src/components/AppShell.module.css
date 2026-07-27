@@ -15,7 +15,8 @@
   max-width: 520px;
   margin: 0 auto;
   height: 56px;
-  padding: 0 var(--space-4) 0 var(--space-3);
+  padding: 0 calc(var(--space-4) + var(--edge-gain, 0px)) 0
+    calc(var(--space-3) + var(--edge-gain, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,8 +59,9 @@
 .main {
   max-width: 520px;
   margin: 0 auto;
-  /* 좌우 엣지 인셋 16px — SEED 모바일 엣지 인셋 (§5) */
-  padding: var(--space-5) var(--space-4) calc(86px + env(safe-area-inset-bottom));
+  /* 좌우 엣지 인셋 16px — SEED 모바일 엣지 인셋 (§5). 프레임 안에선 +--edge-gain */
+  padding: var(--space-5) calc(var(--space-4) + var(--edge-gain, 0px))
+    calc(86px + env(safe-area-inset-bottom));
   animation: page-enter var(--t-page);
 }
 /* 라우트 전환 시 #main 으로 포커스를 옮기지만(스크린리더 대응) 시각적 링은 숨긴다 */
