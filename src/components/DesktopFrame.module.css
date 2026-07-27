@@ -29,7 +29,7 @@
     justify-content: center;
     gap: clamp(48px, 8vw, 160px);
     min-height: 100dvh;
-    padding: 32px;
+    padding: 48px;
     background: radial-gradient(
         900px 600px at 18% 22%,
         var(--teal-50),
@@ -49,7 +49,7 @@
     position: relative;
     /* 스크린(베젤 안쪽)이 정확히 430:932 (Pro Max) 비율이 되도록
      * 베젤 두께(11px×2)를 빼고 더해 크기를 계산한다. */
-    --device-h: min(1040px, calc(100dvh - 64px), calc((100vw - 96px) * (932 / 430)));
+    --device-h: min(1040px, calc(100dvh - 96px), calc((100vw - 128px) * (932 / 430)));
     height: var(--device-h);
     width: calc((var(--device-h) - 22px) * 430 / 932 + 22px);
     padding: 11px; /* 베젤 두께 */
@@ -139,8 +139,8 @@
   .device {
     --device-h: min(
       1040px,
-      calc(100dvh - 64px),
-      calc((100vw - min(500px, 36vw) - clamp(48px, 8vw, 160px) - 96px) * (932 / 430))
+      calc(100dvh - 96px),
+      calc((100vw - min(500px, 36vw) - clamp(48px, 8vw, 160px) - 128px) * (932 / 430))
     );
   }
 
