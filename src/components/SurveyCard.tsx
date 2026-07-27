@@ -12,20 +12,25 @@ export function SurveyCard({ survey }: { survey: Survey }) {
 
   return (
     <Link to={`/surveys/${survey.id}`} className={styles.card}>
-      <h3 className={styles.title}>{survey.title}</h3>
-      <p className={styles.meta}>
-        {owner?.university ? `${owner.university} · ` : ''}
-        {owner?.nickname ?? '익명'} ·{' '}
-        {nearEnd ? (
-          <span className={styles.urgent}>마감 임박</span>
-        ) : (
-          relativeTime(survey.createdAt)
-        )}
-      </p>
-      <p className={styles.meta}>
-        {estLabel(survey.estMinutes)} · 목표 <span className="num">{survey.targetCount}</span>명
-      </p>
-      <p className={styles.credit}>크레딧 +{survey.costPerResponse}</p>
+      <div className={styles.info}>
+        <h3 className={styles.title}>{survey.title}</h3>
+        <p className={styles.meta}>
+          {owner?.university ? `${owner.university} · ` : ''}
+          {owner?.nickname ?? '익명'} ·{' '}
+          {nearEnd ? (
+            <span className={styles.urgent}>마감 임박</span>
+          ) : (
+            relativeTime(survey.createdAt)
+          )}
+        </p>
+        <p className={styles.meta}>
+          {estLabel(survey.estMinutes)} · 목표 <span className="num">{survey.targetCount}</span>명
+        </p>
+      </div>
+      <div className={styles.creditBox}>
+        <span className={styles.credit}>+{survey.costPerResponse}</span>
+        <span className={styles.creditLabel}>크레딧</span>
+      </div>
     </Link>
   );
 }
