@@ -82,6 +82,20 @@ export function DesktopFrame({ children }: { children: ReactNode }) {
   );
 }
 
+// 다크 히어로 등 어두운 화면이 상태바(노치 줄)까지 색을 이어가도록 —
+// 마운트 동안 상태바 배경/전경을 덮어쓰고 언마운트 시 원복한다.
+export function useStatusBarTheme(bg: string, fg = '#ffffff') {
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--sb-bg', bg);
+    root.style.setProperty('--sb-fg', fg);
+    return () => {
+      root.style.removeProperty('--sb-bg');
+      root.style.removeProperty('--sb-fg');
+    };
+  }, [bg, fg]);
+}
+
 // 아이폰 상태바 — 실제 시간 + 셀룰러/와이파이/배터리, 가운데는 다이나믹 아일랜드
 function StatusBar() {
   const [now, setNow] = useState(() => new Date());

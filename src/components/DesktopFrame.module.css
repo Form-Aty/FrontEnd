@@ -137,8 +137,10 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: var(--sb-h);
-    background: var(--bg-base);
-    color: var(--text-strong);
+    /* 페이지가 --sb-bg/--sb-fg 를 정의하면 그 테마를 따른다 (예: 피드 다크 히어로) */
+    background: var(--sb-bg, var(--bg-base));
+    color: var(--sb-fg, var(--text-strong));
+    transition: background var(--t-base), color var(--t-base);
   }
   .sbTime {
     justify-self: center;

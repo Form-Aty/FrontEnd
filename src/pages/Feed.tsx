@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/AppShell';
+import { useStatusBarTheme } from '@/components/DesktopFrame';
 import { SurveyCard } from '@/components/SurveyCard';
 import { EmptyState } from '@/components/Bits';
 import { ErrorState, SkeletonList } from '@/components/Skeleton';
@@ -50,6 +51,7 @@ export function Feed() {
   const push = useToast((s) => s.push);
   const [sort, setSort] = useState<Sort>('전체');
   const credit = useCountUp(me?.responseCredit ?? 0);
+  useStatusBarTheme('#1c2532'); // 히어로 그라디언트 시작색과 동일
 
   const sorted = useMemo(() => {
     const list = [...(surveys ?? [])];
