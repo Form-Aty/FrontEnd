@@ -100,11 +100,11 @@
 /* ── 스티키 제출 바 — 블러 배경으로 항상 하단 고정 ── */
 .submit {
   --px: calc(var(--space-4) + var(--edge-gain, 0px));
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  z-index: 10;
-  margin: var(--space-5) calc(-1 * var(--px))
-    calc(-1 * (var(--space-6) + env(safe-area-inset-bottom)));
+  left: 0;
+  right: 0;
+  z-index: 20;
   padding: var(--space-3) var(--px) calc(var(--space-3) + env(safe-area-inset-bottom));
   background: color-mix(in srgb, var(--bg-base) 90%, transparent);
   backdrop-filter: blur(10px);
