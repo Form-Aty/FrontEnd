@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(380px 300px at 100% -6%, var(--teal-50), transparent 65%),
+    radial-gradient(380px 300px at 100% -6%, var(--surface-teal), transparent 65%),
     var(--bg-base);
   padding: calc(var(--space-3) + env(safe-area-inset-top))
     calc(var(--space-4) + var(--edge-gain, 0px))

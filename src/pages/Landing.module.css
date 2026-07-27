@@ -8,8 +8,8 @@
   flex-direction: column;
   /* 화이트 위 은은한 브랜드 워시 — 밋밋함 제거, 콘텐츠 대비는 유지 */
   background:
-    radial-gradient(420px 320px at 100% -4%, var(--teal-50), transparent 65%),
-    radial-gradient(360px 300px at -12% 38%, var(--gray-50), transparent 60%),
+    radial-gradient(420px 320px at 100% -4%, var(--surface-teal), transparent 65%),
+    radial-gradient(360px 300px at -12% 38%, var(--bg-subtle), transparent 60%),
     var(--bg-base);
   padding: calc(var(--space-5) + env(safe-area-inset-top))
     calc(var(--space-4) + var(--edge-gain, 0px))

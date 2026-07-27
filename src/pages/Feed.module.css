@@ -230,9 +230,10 @@
   border-radius: var(--radius-full);
   transition: background var(--t-base), color var(--t-base);
 }
+/* 시맨틱 토큰이라 다크에서도 반전 유지 (라이트: 잉크/화이트, 다크: 화이트/잉크) */
 .tabOn {
-  background: var(--gray-900);
-  color: var(--gray-0);
+  background: var(--text-strong);
+  color: var(--bg-base);
 }
 
 /* 리스트 행이 자체 헤어라인을 가지므로 간격 없음 */

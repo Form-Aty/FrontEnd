@@ -31,12 +31,13 @@
     gap: clamp(48px, 8vw, 160px);
     min-height: 100dvh;
     padding: 48px;
+    /* 시맨틱 토큰 — 다크 테마에서도 자연스러운 앰비언트 워시 */
     background: radial-gradient(
         900px 600px at 18% 22%,
-        var(--teal-50),
+        var(--surface-teal),
         transparent 60%
       ),
-      radial-gradient(800px 700px at 85% 80%, #eef1f6, transparent 60%),
+      radial-gradient(800px 700px at 85% 80%, var(--bg-sunken), transparent 60%),
       var(--bg-subtle);
   }
 

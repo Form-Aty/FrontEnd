@@ -244,6 +244,13 @@
 .scaleLabels {
   display: flex;
   justify-content: space-between;
+  gap: var(--space-4);
   font-size: var(--text-caption);
   color: var(--text-muted);
+}
+.scaleLabels span {
+  max-width: 48%;
+}
+.scaleLabels span:last-child {
+  text-align: right;
 }

@@ -2,7 +2,7 @@
   /* CTA 고정형 전체화면 — iOS 사파리 dvh 버그 회피, svh 기준 (Landing 과 동일) */
   min-height: var(--app-h, 100svh);
   background:
-    radial-gradient(380px 300px at 100% -6%, var(--teal-50), transparent 65%),
+    radial-gradient(380px 300px at 100% -6%, var(--surface-teal), transparent 65%),
     var(--bg-base);
   display: flex;
   flex-direction: column;
