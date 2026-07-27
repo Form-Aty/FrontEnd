@@ -36,6 +36,7 @@ export function VerifySchool() {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [resending, setResending] = useState(false);
@@ -164,13 +165,21 @@ export function VerifySchool() {
             />
             <input
               className={styles.textInput}
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="비밀번호 (8자 이상)"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-label="비밀번호"
             />
+            <label className={styles.showPasswordLabel}>
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={(e) => setShowPassword(e.target.checked)}
+              />
+              비밀번호 표시
+            </label>
           </>
         )}
 

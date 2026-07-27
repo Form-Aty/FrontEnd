@@ -216,6 +216,45 @@
   box-shadow: 0 0 0 3px var(--surface-teal);
 }
 
+.showPasswordLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  align-self: flex-end;
+}
+.showPasswordLabel input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-strong);
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+.showPasswordLabel input[type='checkbox']:checked {
+  background: #34a866;
+  border-color: #34a866;
+}
+.showPasswordLabel input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 8px;
+  height: 13px;
+  border: 2.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
 .actions {
   display: flex;
   flex-direction: column;
