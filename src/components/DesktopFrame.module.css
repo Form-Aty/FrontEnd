@@ -138,6 +138,7 @@
   }
   .viewport::-webkit-scrollbar-track {
     background: transparent;
+    margin: 40px 0 24px;
   }
   .viewport::-webkit-scrollbar-thumb {
     background: #34a866;
