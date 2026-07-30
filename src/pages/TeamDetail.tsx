@@ -4,7 +4,8 @@ import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/Button';
 import { Card, CreditAmount, EmptyState } from '@/components/Bits';
 import { ErrorState, Skeleton } from '@/components/Skeleton';
-import { IconCopy, IconTeam } from '@/components/icons';
+import { Sheet } from '@/components/Sheet';
+import { IconCopy, IconCredit, IconPlus, IconTeam } from '@/components/icons';
 import { api } from '@/api/api';
 import { useInvalidateAll, useTeam, useTeamCredit, useTeamInvites } from '@/api/queries';
 import { ApiError } from '@/api/errors';
@@ -27,6 +28,11 @@ const TEAM_CREDIT_REASON: Record<TeamCreditReason, string> = {
   REFUND: '환불',
 };
 
+const DEPOSIT_PRESETS = [10, 30, 50];
+
+type TabKey = 'members' | 'ledger';
+type SheetKey = 'invite' | 'deposit' | null;
+
 export function TeamDetail() {
   const teamId = Number(useParams().id);
   const { data, isLoading, isError, refetch } = useTeam(teamId);
@@ -38,6 +44,8 @@ export function TeamDetail() {
   const invalidate = useInvalidateAll();
   const push = useToast((s) => s.push);
 
+  const [tab, setTab] = useState<TabKey>('members');
+  const [sheet, setSheet] = useState<SheetKey>(null);
   const [depositAmount, setDepositAmount] = useState(10);
   const [depositing, setDepositing] = useState(false);
   const [creatingInvite, setCreatingInvite] = useState(false);
@@ -101,6 +109,7 @@ export function TeamDetail() {
       await api.depositTeamCredit(teamId, depositAmount);
       invalidate();
       push('팀 크레딧을 추가했어요.', 'positive');
+      setSheet(null);
     } catch (err) {
       if (err instanceof ApiError) push(err.message, 'warning');
     } finally {
@@ -130,8 +139,8 @@ export function TeamDetail() {
     return (
       <AppShell back title="팀 상세">
         <div className={styles.loading}>
-          <Skeleton height={28} width="60%" />
-          <Skeleton height={120} radius="var(--radius-lg)" />
+          <Skeleton height={160} radius="var(--radius-lg)" />
+          <Skeleton height={44} radius="var(--radius-md)" />
           <Skeleton height={220} radius="var(--radius-lg)" />
         </div>
       </AppShell>
@@ -140,43 +149,105 @@ export function TeamDetail() {
 
   return (
     <AppShell back title="팀 상세">
-      <section className={styles.hero}>
-        <span className={styles.teamIcon} aria-hidden>
-          <IconTeam size={24} />
-        </span>
-        <div className={styles.heroBody}>
-          <h1 className={styles.title}>{team.name}</h1>
-          <p className="sm muted">{team.memberCount}명 · 팀 크레딧 {team.responseCredit}개</p>
+      <Card as="section" className={styles.hero}>
+        <div className={styles.heroTop}>
+          <span className={styles.teamIcon} aria-hidden>
+            <IconTeam size={22} />
+          </span>
+          <div className={styles.heroBody}>
+            <h1 className={styles.title}>{team.name}</h1>
+          </div>
+          <span className={styles.role}>{ROLE_LABEL[team.role]}</span>
         </div>
-        <span className={styles.role}>{ROLE_LABEL[team.role]}</span>
-      </section>
 
-      <div className={styles.stats}>
-        <Stat label="팀 크레딧" value={team.responseCredit} suffix="개" />
-        <Stat label="팀원" value={team.memberCount} suffix="명" />
+        <div className={styles.stats}>
+          <Stat label="팀 크레딧" value={team.responseCredit} suffix="개" />
+          <span className={styles.statDivider} aria-hidden />
+          <Stat label="팀원" value={team.memberCount} suffix="명" />
+        </div>
+
+        <div className={styles.actions}>
+          {isAdmin && (
+            <Button variant="secondary" type="button" onClick={() => setSheet('invite')}>
+              <span className={styles.btnInner}>
+                <IconPlus size={16} /> 팀원 초대
+              </span>
+            </Button>
+          )}
+          <Button type="button" onClick={() => setSheet('deposit')}>
+            <span className={styles.btnInner}>
+              <IconCredit size={16} /> 크레딧 추가
+            </span>
+          </Button>
+        </div>
+      </Card>
+
+      <div className={styles.tabs} role="tablist">
+        <button
+          role="tab"
+          aria-selected={tab === 'members'}
+          className={`${styles.tab} ${tab === 'members' ? styles.tabOn : ''}`}
+          onClick={() => setTab('members')}
+        >
+          팀원 <span className="num">{team.memberCount}</span>
+        </button>
+        <button
+          role="tab"
+          aria-selected={tab === 'ledger'}
+          className={`${styles.tab} ${tab === 'ledger' ? styles.tabOn : ''}`}
+          onClick={() => setTab('ledger')}
+        >
+          크레딧 내역
+        </button>
       </div>
 
-      {isAdmin && (
-        <Card as="section" className={styles.section}>
-          <div className={styles.sectionHead}>
-            <h2 className="h3">초대</h2>
-            <Button size="sm" loading={creatingInvite} onClick={createInvite}>
-              코드 발급
-            </Button>
-          </div>
-          {activeInvite ? (
-            <InviteRow invite={activeInvite} onCopy={() => copyInvite(activeInvite)} onRevoke={() => revokeInvite(activeInvite)} />
+      {tab === 'members' ? (
+        <Card as="section" className={styles.listCard}>
+          <ul className={styles.members}>
+            {data.members.map((member) => (
+              <li key={member.userId} className={styles.member}>
+                <div className={styles.avatar} aria-hidden>
+                  {member.nickname[0]}
+                </div>
+                <div className={styles.memberBody}>
+                  <p className={styles.memberName}>{member.nickname}</p>
+                  <p className="caption muted">{member.email}</p>
+                </div>
+                {isOwner && member.role !== 'OWNER' ? (
+                  <select
+                    className={styles.roleSelect}
+                    value={member.role}
+                    onChange={(e) => changeRole(member, e.target.value as Exclude<TeamRole, 'OWNER'>)}
+                    aria-label={`${member.nickname} 역할`}
+                  >
+                    <option value="ADMIN">관리자</option>
+                    <option value="MEMBER">팀원</option>
+                  </select>
+                ) : (
+                  <span className={styles.memberRole}>{ROLE_LABEL[member.role]}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ) : (
+        <Card as="section" className={styles.listCard}>
+          {credit.isLoading ? (
+            <Skeleton height={120} radius="var(--radius-lg)" />
+          ) : !credit.data?.ledger.length ? (
+            <EmptyState title="아직 팀 거래 내역이 없어요." />
           ) : (
-            <p className="sm muted">사용 가능한 초대코드가 없어요.</p>
-          )}
-          {invites.data && invites.data.length > 0 && (
-            <ul className={styles.inviteHistory}>
-              {invites.data.slice(0, 5).map((invite) => (
-                <li key={invite.id} className={styles.inviteMini}>
-                  <span className="num">{invite.code}</span>
-                  <span className="caption muted">
-                    {invite.usedCount}/{invite.maxUses} · {invite.revokedAt ? '폐기됨' : dateLabel(invite.expiresAt)}
-                  </span>
+            <ul className={styles.ledger}>
+              {credit.data.ledger.map((entry) => (
+                <li key={entry.id} className={styles.ledgerRow}>
+                  <div>
+                    <p className="sm">{TEAM_CREDIT_REASON[entry.reason] ?? entry.reason}</p>
+                    <p className="caption muted">
+                      {entry.actorNickname ? `${entry.actorNickname} · ` : ''}
+                      {dateLabel(entry.createdAt)}
+                    </p>
+                  </div>
+                  <CreditAmount value={entry.delta} />
                 </li>
               ))}
             </ul>
@@ -184,99 +255,97 @@ export function TeamDetail() {
         </Card>
       )}
 
-      <Card as="section" className={styles.section}>
-        <h2 className="h3">팀 크레딧 추가</h2>
-        <form className={styles.depositForm} onSubmit={deposit}>
-          <label className={styles.amountField}>
-            <span>입금할 크레딧</span>
-            <input
-              type="number"
-              min={1}
-              value={depositAmount}
-              onChange={(e) => setDepositAmount(Math.max(1, Number(e.target.value)))}
-            />
-          </label>
-          <Button loading={depositing}>추가</Button>
-        </form>
-      </Card>
+      {sheet === 'invite' && isAdmin && (
+        <Sheet label="팀원 초대" onClose={() => setSheet(null)}>
+          <h2 className="h2">팀원 초대</h2>
+          <p className="sm muted">초대 링크를 공유하면 바로 팀에 가입할 수 있어요.</p>
 
-      <Card as="section" className={styles.section}>
-        <h2 className="h3">팀원</h2>
-        <ul className={styles.members}>
-          {data.members.map((member) => (
-            <li key={member.userId} className={styles.member}>
-              <div className={styles.avatar} aria-hidden>
-                {member.nickname[0]}
+          {activeInvite ? (
+            <>
+              <div className={styles.codeBox}>
+                <span className={`num ${styles.codeText}`}>{activeInvite.code}</span>
+                <span className="caption muted">
+                  {activeInvite.usedCount}/{activeInvite.maxUses}회 사용 · {dateLabel(activeInvite.expiresAt)} 만료
+                </span>
               </div>
-              <div className={styles.memberBody}>
-                <p className={styles.memberName}>{member.nickname}</p>
-                <p className="caption muted">{member.email}</p>
+              <div className={styles.sheetActions}>
+                <Button variant="danger" type="button" onClick={() => revokeInvite(activeInvite)}>
+                  폐기
+                </Button>
+                <Button full type="button" onClick={() => copyInvite(activeInvite)}>
+                  <span className={styles.btnInner}>
+                    <IconCopy size={16} /> 초대 링크 복사
+                  </span>
+                </Button>
               </div>
-              {isOwner && member.role !== 'OWNER' ? (
-                <select
-                  className={styles.roleSelect}
-                  value={member.role}
-                  onChange={(e) => changeRole(member, e.target.value as Exclude<TeamRole, 'OWNER'>)}
-                  aria-label={`${member.nickname} 역할`}
+            </>
+          ) : (
+            <>
+              <div className={styles.codeBox}>
+                <span className="sm muted">사용 가능한 초대코드가 없어요.</span>
+              </div>
+              <Button full type="button" loading={creatingInvite} onClick={createInvite}>
+                코드 발급
+              </Button>
+            </>
+          )}
+
+          {invites.data && invites.data.length > 0 && (
+            <div className={styles.inviteHistory}>
+              <p className="caption muted">최근 발급 내역</p>
+              <ul>
+                {invites.data.slice(0, 5).map((invite) => (
+                  <li key={invite.id} className={styles.inviteMini}>
+                    <span className="num">{invite.code}</span>
+                    <span className="caption muted">
+                      {invite.usedCount}/{invite.maxUses} · {invite.revokedAt ? '폐기됨' : dateLabel(invite.expiresAt)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Sheet>
+      )}
+
+      {sheet === 'deposit' && (
+        <Sheet label="팀 크레딧 추가" onClose={() => setSheet(null)}>
+          <h2 className="h2">팀 크레딧 추가</h2>
+          <p className="sm muted">내 크레딧에서 팀 크레딧으로 입금돼요.</p>
+          <form className={styles.depositForm} onSubmit={deposit}>
+            <div className={styles.quickAmounts}>
+              {DEPOSIT_PRESETS.map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  className={`${styles.quickAmount} ${depositAmount === preset ? styles.quickAmountOn : ''}`}
+                  onClick={() => setDepositAmount(preset)}
                 >
-                  <option value="ADMIN">관리자</option>
-                  <option value="MEMBER">팀원</option>
-                </select>
-              ) : (
-                <span className={styles.memberRole}>{ROLE_LABEL[member.role]}</span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </Card>
-
-      <Card as="section" className={styles.section}>
-        <h2 className="h3">팀 크레딧 내역</h2>
-        {credit.isLoading ? (
-          <Skeleton height={120} radius="var(--radius-lg)" />
-        ) : !credit.data?.ledger.length ? (
-          <EmptyState title="아직 팀 거래 내역이 없어요." />
-        ) : (
-          <ul className={styles.ledger}>
-            {credit.data.ledger.map((entry) => (
-              <li key={entry.id} className={styles.ledgerRow}>
-                <div>
-                  <p className="sm">{TEAM_CREDIT_REASON[entry.reason] ?? entry.reason}</p>
-                  <p className="caption muted">
-                    {entry.actorNickname ? `${entry.actorNickname} · ` : ''}
-                    {dateLabel(entry.createdAt)}
-                  </p>
-                </div>
-                <CreditAmount value={entry.delta} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </Card>
+                  <span className="num">{preset}</span>개
+                </button>
+              ))}
+            </div>
+            <label className={styles.sheetField}>
+              <span>입금할 크레딧</span>
+              <input
+                type="number"
+                min={1}
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(Math.max(1, Number(e.target.value)))}
+              />
+            </label>
+            <div className={styles.sheetActions}>
+              <Button variant="secondary" full type="button" onClick={() => setSheet(null)}>
+                취소
+              </Button>
+              <Button full loading={depositing}>
+                추가하기
+              </Button>
+            </div>
+          </form>
+        </Sheet>
+      )}
     </AppShell>
-  );
-}
-
-function InviteRow({ invite, onCopy, onRevoke }: { invite: TeamInvite; onCopy: () => void; onRevoke: () => void }) {
-  return (
-    <div className={styles.inviteRow}>
-      <div>
-        <p className={styles.inviteCode}>
-          <span className="num">{invite.code}</span>
-        </p>
-        <p className="caption muted">
-          {invite.usedCount}/{invite.maxUses}회 사용 · {dateLabel(invite.expiresAt)} 만료
-        </p>
-      </div>
-      <div className={styles.inviteActions}>
-        <button className={styles.iconBtn} onClick={onCopy} aria-label="초대 링크 복사">
-          <IconCopy size={18} />
-        </button>
-        <Button size="sm" variant="danger" onClick={onRevoke}>
-          폐기
-        </Button>
-      </div>
-    </div>
   );
 }
 

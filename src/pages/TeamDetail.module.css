@@ -4,17 +4,24 @@
   gap: var(--space-4);
 }
 
+/* ── 히어로 카드: 팀 정보 + 통계 + 빠른 액션을 한 카드로 ── */
 .hero {
-  display: grid;
-  grid-template-columns: 52px 1fr auto;
-  align-items: center;
-  gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
   margin-bottom: var(--space-4);
 }
 
+.heroTop {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .teamIcon {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-full);
   display: grid;
   place-items: center;
@@ -28,7 +35,7 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: var(--text-h1);
+  font-size: var(--text-h2);
   font-weight: 700;
   color: var(--text-strong);
   overflow: hidden;
@@ -48,20 +55,18 @@
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  padding: var(--space-3) 0;
 }
 
 .stat {
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  background: var(--bg-base);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-sm);
+  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
 }
 
@@ -72,104 +77,57 @@
   font-weight: 700;
 }
 
-.section {
+.statDivider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-default);
+}
+
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
-}
-
-.sectionHead,
-.inviteRow,
-.ledgerRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-
-.sectionHead {
-  flex-wrap: wrap;
-}
-
-.inviteRow {
-  align-items: flex-start;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  background: var(--bg-subtle);
-}
-
-.inviteCode {
-  font-size: var(--text-h2);
-  font-weight: 800;
-  color: var(--text-strong);
-  letter-spacing: 0;
-  word-break: break-all;
-}
-
-.inviteActions {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
   gap: var(--space-2);
 }
 
-.iconBtn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  background: var(--bg-base);
-  color: var(--text-default);
-  display: grid;
-  place-items: center;
+.actions > * {
+  flex: 1;
 }
 
-.inviteHistory {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.inviteMini {
-  display: flex;
+.btnInner {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--border-default);
-}
-
-.depositForm {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: var(--space-3);
-}
-
-.amountField {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
   gap: 6px;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-default);
 }
 
-.amountField input,
-.roleSelect {
-  width: 100%;
-  min-width: 0;
-  min-height: 44px;
-  border: 1px solid var(--border-strong);
+/* ── 세그먼트 탭 (Teams의 modeTabs와 동일한 문법) ── */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  background: var(--bg-sunken);
+  padding: 4px;
   border-radius: var(--radius-md);
-  background: var(--bg-base);
-  color: var(--text-default);
-  padding: 0 var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.tab {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
   font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.tabOn {
+  background: var(--bg-base);
+  color: var(--text-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── 탭 콘텐츠 카드 ── */
+.listCard {
+  padding: var(--space-2) var(--space-5);
 }
 
 .members,
@@ -187,6 +145,13 @@
 .member:last-child,
 .ledgerRow:last-child {
   border-bottom: none;
+}
+
+.ledgerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 .member {
@@ -219,27 +184,126 @@
   white-space: nowrap;
 }
 
+.roleSelect {
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-base);
+  color: var(--text-default);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+/* ── 초대 시트 ── */
+.codeBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.codeText {
+  font-size: var(--text-h2);
+  font-weight: 800;
+  color: var(--text-strong);
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+
+.inviteHistory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: 1px solid var(--border-default);
+  padding-top: var(--space-3);
+}
+
+.inviteHistory ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.inviteMini {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ── 크레딧 추가 시트 ── */
+.depositForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.quickAmounts {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.quickAmount {
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-base);
+  color: var(--text-default);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.quickAmountOn {
+  border-color: var(--action-primary);
+  background: var(--surface-teal);
+  color: var(--teal-700);
+}
+
+.sheetField {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-default);
+}
+
+.sheetField input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-base);
+  color: var(--text-default);
+  padding: 0 var(--space-4);
+  font-size: var(--text-body);
+  font-weight: 400;
+}
+
+.sheetField input:focus {
+  border-color: var(--action-primary);
+  box-shadow: 0 0 0 3px var(--surface-teal);
+}
+
+.sheetActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
 @media (max-width: 420px) {
-  .hero {
-    grid-template-columns: 48px 1fr;
-  }
-
-  .role {
-    grid-column: 2;
-    justify-self: start;
-  }
-
-  .depositForm {
-    grid-template-columns: 1fr;
-  }
-
-  .inviteRow {
+  .actions {
     flex-direction: column;
-  }
-
-  .inviteActions {
-    width: 100%;
-    justify-content: flex-end;
   }
 
   .member {
