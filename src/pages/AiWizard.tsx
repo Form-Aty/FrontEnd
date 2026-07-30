@@ -165,14 +165,10 @@ export function AiWizard() {
 
         {step === 1 && (
           <>
-            <h1 className={styles.title}>
-              조사 목적을
-              <br />
-              구체적으로 알려주세요
-            </h1>
+            <h1 className={styles.title}>조사 목적을 알려주세요</h1>
             <p className={styles.sub}>
-              연구 근거를 적용해 문항·응답척도·순서를 함께 설계해요. 현재 무료 베타이며 사용자별
-              호출 한도가 있어요.
+              연구 근거를 적용해 문항과 응답척도, 순서를 함께 설계해요. 무료 베타로 호출 한도가
+              있어요.
             </p>
 
             <div className={styles.form}>
@@ -180,6 +176,7 @@ export function AiWizard() {
                 <span className={styles.label}>조사 주제</span>
                 <textarea
                   className={styles.textarea}
+                  rows={2}
                   maxLength={500}
                   placeholder="예) 대학생의 카페 이용 경험과 재방문 의도"
                   value={topic}
@@ -211,8 +208,11 @@ export function AiWizard() {
               </label>
 
               <label className={styles.field}>
-                <span className={styles.label}>
-                  문항 수 <strong>{questionCount}개</strong>
+                <span className={styles.labelRow}>
+                  <span className={styles.label}>
+                    문항 수 <strong>{questionCount}개</strong>
+                  </span>
+                  <span className={styles.rangeHint}>인지부담 고려 5~20개</span>
                 </span>
                 <input
                   className={styles.range}
@@ -222,13 +222,12 @@ export function AiWizard() {
                   value={questionCount}
                   onChange={(event) => setQuestionCount(Number(event.target.value))}
                 />
-                <span className={styles.rangeHint}>인지부담을 고려해 5~20개만 생성해요.</span>
               </label>
 
               <label className={styles.field}>
                 <span className={styles.label}>추가 조건 (선택)</span>
-                <textarea
-                  className={`${styles.textarea} ${styles.compactTextarea}`}
+                <input
+                  className={styles.input}
                   maxLength={1000}
                   placeholder="예) 개인정보는 묻지 않고, 자유서술은 마지막에 1개만"
                   value={constraints}
@@ -276,11 +275,14 @@ export function AiWizard() {
                         </div>
                         <p className={styles.qText}>{question.text}</p>
                         {question.options.length > 0 && (
-                          <ul className={styles.options}>
-                            {question.options.map((option) => (
-                              <li key={option}>{option}</li>
-                            ))}
-                          </ul>
+                          <details className={styles.optionsBox}>
+                            <summary>선택지 {question.options.length}개 보기</summary>
+                            <ul className={styles.options}>
+                              {question.options.map((option) => (
+                                <li key={option}>{option}</li>
+                              ))}
+                            </ul>
+                          </details>
                         )}
                         {question.type === 'scale' && (
                           <p className={styles.scaleLabels}>

@@ -30,7 +30,7 @@
 }
 .body {
   flex: 1;
-  padding: var(--space-5) calc(var(--space-4) + var(--edge-gain, 0px)) var(--space-6);
+  padding: var(--space-4) calc(var(--space-4) + var(--edge-gain, 0px)) var(--space-5);
   overflow-y: auto;
 }
 .title {
@@ -42,7 +42,7 @@
   color: var(--text-strong);
 }
 .sub {
-  margin-top: var(--space-3);
+  margin-top: var(--space-1);
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.5;
@@ -51,13 +51,19 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-top: var(--space-5);
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 .field {
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 6px;
+}
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: var(--space-2);
 }
 .label {
@@ -98,10 +104,10 @@
 }
 .textarea {
   width: 100%;
-  min-height: 150px;
+  min-height: 76px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3);
   font-size: var(--text-body);
   line-height: 1.6;
   resize: none;
@@ -109,25 +115,23 @@
   color: var(--text-default);
   background: var(--bg-base);
 }
-.compactTextarea {
-  min-height: 92px;
-}
 .counter {
   position: absolute;
   right: var(--space-3);
-  bottom: var(--space-3);
+  bottom: var(--space-2);
   font-size: var(--text-caption);
   color: var(--text-disabled);
   font-variant-numeric: tabular-nums;
 }
 
 .rqBox {
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   background: var(--bg-subtle);
   color: var(--text-default);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3);
   font-weight: 600;
+  font-size: var(--text-sm);
   line-height: 1.5;
 }
 .eyebrow {
@@ -153,10 +157,10 @@
   font-size: var(--text-caption);
 }
 .qList {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 .generatedSection {
   display: flex;
@@ -185,7 +189,19 @@
 .qCard {
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3);
+}
+.optionsBox {
+  margin-top: var(--space-2);
+}
+.optionsBox summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+  font-weight: 600;
+}
+.optionsBox[open] summary {
+  margin-bottom: var(--space-1);
 }
 .qHead {
   display: flex;
@@ -243,19 +259,19 @@
 }
 
 .issues {
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 .scoreCard {
   display: flex;
   align-items: baseline;
   gap: var(--space-1);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3) var(--space-4);
 }
 .scoreCard span {
   color: var(--text-muted);
@@ -270,7 +286,7 @@
 .issue {
   background: var(--surface-amber);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3);
 }
 .issueError {
   border: 1px solid var(--amber-500);
@@ -342,7 +358,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  padding-top: var(--space-8);
+  padding-top: var(--space-6);
 }
 .nextSteps {
   display: flex;

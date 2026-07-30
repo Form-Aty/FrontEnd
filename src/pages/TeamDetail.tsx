@@ -5,7 +5,7 @@ import { Button } from '@/components/Button';
 import { Card, CreditAmount, EmptyState } from '@/components/Bits';
 import { ErrorState, Skeleton } from '@/components/Skeleton';
 import { Sheet } from '@/components/Sheet';
-import { IconCopy, IconCredit, IconPlus, IconTeam } from '@/components/icons';
+import { IconCopy, IconCredit, IconPlus } from '@/components/icons';
 import { api } from '@/api/api';
 import { useInvalidateAll, useTeam, useTeamCredit, useTeamInvites } from '@/api/queries';
 import { ApiError } from '@/api/errors';
@@ -151,9 +151,6 @@ export function TeamDetail() {
     <AppShell back title="팀 상세">
       <Card as="section" className={styles.hero}>
         <div className={styles.heroTop}>
-          <span className={styles.teamIcon} aria-hidden>
-            <IconTeam size={22} />
-          </span>
           <div className={styles.heroBody}>
             <h1 className={styles.title}>{team.name}</h1>
           </div>
