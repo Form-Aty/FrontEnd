@@ -114,6 +114,12 @@ export function SurveyFill() {
     return true;
   };
 
+  // 데스크톱 폰 프레임은 자체 스크롤 컨테이너(#app-scroll)를 가진다
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('app-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const goNext = () => {
     if (!validateCurrentSection()) return;
     if (!nextSectionId) {
@@ -124,7 +130,7 @@ export function SurveyFill() {
       setSectionHistory((history) => [...history, currentSection.id]);
     }
     setCurrentSectionId(nextSectionId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   const goBack = () => {
@@ -135,6 +141,7 @@ export function SurveyFill() {
       return next;
     });
     setErrorIdx(new Set());
+    scrollToTop();
   };
 
   const answeredCount = questions.filter((q) => !isEmpty(answers[q.id])).length;
@@ -216,7 +223,6 @@ export function SurveyFill() {
             제출하고 크레딧 받기
           </Button>
         )}
-        {!nextSectionId && <p className={styles.hint}>제출하면 +{survey.costPerResponse} 크레딧이 적립돼요.</p>}
       </div>
     </AppShell>
   );
