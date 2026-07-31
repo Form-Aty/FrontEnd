@@ -33,6 +33,23 @@ test.describe('랜딩', () => {
     await page.waitForLoadState('networkidle');
     expect(errors).toEqual([]);
   });
+
+  test('모바일에서 문서 스크롤이 잠기지 않는다', async ({ page }) => {
+    test.skip(isDesktop(page), '모바일 문서 스크롤 회귀 테스트');
+    await page.goto('/');
+
+    // 페이지 길이와 무관하게 전역 body 스크롤 잠금 여부를 검증한다.
+    await page.evaluate(() => {
+      const spacer = document.createElement('div');
+      spacer.style.height = '1200px';
+      spacer.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(spacer);
+    });
+
+    expect(await page.evaluate(() => getComputedStyle(document.body).overflowY)).not.toBe('hidden');
+    await page.mouse.wheel(0, 600);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  });
 });
 
 test.describe('로그인 / 회원가입', () => {

@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { useConfirmStore } from '@/store/confirm';
+import { useCallback, useRef } from 'react';
+import { useConfirmStore, type ConfirmOptions } from '@/store/confirm';
 import { Button } from './Button';
 import { useModalBehavior } from './modal';
 import styles from './ConfirmDialog.module.css';
@@ -9,14 +9,26 @@ export function ConfirmHost() {
   const open = useConfirmStore((s) => s.open);
   const options = useConfirmStore((s) => s.options);
   const settle = useConfirmStore((s) => s.settle);
-  const ref = useRef<HTMLDivElement>(null);
-  useModalBehavior(ref, () => settle(false));
 
   if (!open || !options) return null;
+  return <ConfirmDialog options={options} settle={settle} />;
+}
+
+function ConfirmDialog({
+  options,
+  settle,
+}: {
+  options: ConfirmOptions;
+  settle: (ok: boolean) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const close = useCallback(() => settle(false), [settle]);
+  useModalBehavior(ref, close);
+
   const { title, body, confirmLabel = '확인', cancelLabel = '취소', tone = 'default' } = options;
 
   return (
-    <div className={styles.scrim} onClick={() => settle(false)}>
+    <div className={styles.scrim} onClick={close}>
       <div
         ref={ref}
         className={styles.dialog}
