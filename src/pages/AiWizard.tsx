@@ -376,7 +376,7 @@ export function AiWizard() {
             }
             onClick={generate}
           >
-            설문 만들기
+            설문 생성
           </Button>
         )}
         {step === 2 && (
